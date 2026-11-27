@@ -9,7 +9,7 @@
   {
     const rootEl = document.documentElement;
     let w = innerWidth, h = innerHeight;
-    const set = () => rootEl.style.setProperty('--screen', h + 'px');
+    const set = () => { rootEl.style.setProperty('--screen', h + 'px'); dispatchEvent(new Event('screenchange')); };
     set();
     let rt;
     addEventListener('resize', () => {
@@ -149,7 +149,14 @@
   const refit = () => { fitHero(); aimWater(); };
   refit();
   if (document.fonts) document.fonts.ready.then(refit);
-  let aimT; addEventListener('resize', () => { clearTimeout(aimT); aimT = setTimeout(refit, 200); });
+  // re-fit only after the locked screen height has been updated (it fires 'screenchange'),
+  // plus a late safety pass after any resize settles
+  let aimT;
+  addEventListener('screenchange', () => { clearTimeout(aimT); aimT = setTimeout(refit, 30); });
+  addEventListener('resize', () => { clearTimeout(aimT); aimT = setTimeout(refit, 450); });
+  addEventListener('orientationchange', () => setTimeout(refit, 600));
+  addEventListener('pageshow', e => { if (e.persisted) refit(); });
+  if (document.fonts) document.fonts.addEventListener('loadingdone', () => { clearTimeout(aimT); aimT = setTimeout(refit, 30); });
   function frame(t) {
     const s = t / 1000, sy = scrollY;
     // waterline breathes and leans toward the pointer
