@@ -149,10 +149,26 @@
   menu.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
   addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) setMenu(false); });
 
+  // ---- Strata: put each band's waterline exactly through its name ----
+  const strata = $$('.stratum');
+  const setLines = () => strata.forEach(st => {
+    const n = $('.s-name [data-cut]', st), y = n.offsetTop + $('.s-name', st).offsetTop, h = n.offsetHeight;
+    const flip = false;
+    st.style.setProperty('--cl', (y + h * (flip ? .42 : .6)) + 'px');
+    st.style.setProperty('--cr', (y + h * (flip ? .6 : .42)) + 'px');
+  });
+  setLines(); addEventListener('resize', setLines); document.fonts && document.fonts.ready.then(setLines);
+
   // ---- 11. Packages preselect + draft form ----
   const select = $('#package');
   $$('[data-package]').forEach(a => a.addEventListener('click', () => { select.value = a.dataset.package; }));
   const form = $('#quote'), msg = $('.form-msg', form);
+  // inputs grow with what's typed, so the sentence stays a sentence
+  const fit = el => { const t = el.value || el.placeholder; el.style.width = Math.max(4, t.length * 0.84 + 1).toFixed(1) + 'ch'; };
+  $$('input', form).forEach(el => { fit(el); el.addEventListener('input', () => fit(el)); });
+  const fitSel = () => { select.style.width = (select.options[select.selectedIndex].text.length * 0.84 + 2).toFixed(1) + 'ch'; };
+  fitSel(); select.addEventListener('change', fitSel);
+  $$('[data-package]').forEach(a => a.addEventListener('click', fitSel));
   form.addEventListener('submit', e => {
     e.preventDefault();
     const d = new FormData(form);

@@ -124,40 +124,46 @@
 
 <!-- ============ PACKAGES: tilted tickets across a hard orange band ============ -->
 <section id="packages" class="pk" aria-labelledby="pk-h">
-  <div class="pk-band" aria-hidden="true"></div>
   <h2 class="h2 pk-h" id="pk-h">
     <span data-cut="block">Pick</span>
     <span data-cut="block" class="indent">one.</span>
     <span class="aside">(or two, we won't judge)</span>
   </h2>
 
-  <div class="tickets">
-    <article class="ticket" style="--rot:-4deg">
-      <p class="t-kind">Website</p>
-      <h3>Launch</h3>
-      <p class="t-price">£TBC <small>one-off</small></p>
-      <p>A sharp one-pager to get you online and looking the part.</p>
-      <ul><li>Single scrolling page</li><li>Contact form + click-to-call</li><li>Google Business Profile set-up</li><li>Live in two weeks</li></ul>
-      <a class="btn btn-ink" href="#contact" data-package="Launch">Choose Launch</a>
-    </article>
-    <article class="ticket hot" style="--rot:2.5deg">
-      <span class="stamp">Most<br>popular</span>
-      <p class="t-kind">Website</p>
-      <h3>Show&shy;case</h3>
-      <p class="t-price">£TBC <small>one-off</small></p>
-      <p>For trades and makers who sell on their work. Upload new jobs yourself.</p>
-      <ul><li>Up to five pages</li><li>Project gallery, updated from your phone</li><li>Local search basics for your towns</li><li>One AI mentoring session included</li></ul>
-      <a class="btn btn-fire" href="#contact" data-package="Showcase">Choose Showcase</a>
-    </article>
-    <article class="ticket" style="--rot:-1.5deg">
-      <p class="t-kind">Mentoring</p>
-      <h3>AI Kick&shy;start</h3>
-      <p class="t-price">£TBC <small>3 sessions</small></p>
-      <p>Get AI doing real work in your business, not just answering riddles.</p>
-      <ul><li>Find your three biggest time-sinks</li><li>Set up the right tools</li><li>Templates you keep and reuse</li><li>Check-in a month later</li></ul>
-      <a class="btn btn-ink" href="#contact" data-package="AI Kickstart">Choose Kickstart</a>
-    </article>
-  </div>
+</section>
+
+<!-- Packages as strata: each band is cut on the waterline, the name crosses it -->
+<div class="strata">
+  <article class="stratum s1">
+    <div class="s-top"><p class="s-kind">Website · 01</p><p class="s-price">£TBC <small>one-off</small></p></div>
+    <h3 class="s-name"><span data-cut="block">Launch</span></h3>
+    <div class="s-bot">
+      <p class="s-desc">A sharp one-pager to get you online and looking the part.</p>
+      <ul class="s-list"><li>Single scrolling page</li><li>Contact form + click-to-call</li><li>Google Business Profile set-up</li><li>Live in two weeks</li></ul>
+      <a class="s-go" href="#contact" data-package="Launch">Choose Launch <span aria-hidden="true">→</span></a>
+    </div>
+  </article>
+  <article class="stratum s2">
+    <div class="s-top"><p class="s-kind">Website · 02 <b class="s-flag">Most picked</b></p><p class="s-price">£TBC <small>one-off</small></p></div>
+    <h3 class="s-name"><span data-cut="block">Showcase</span></h3>
+    <div class="s-bot">
+      <p class="s-desc">For trades and makers who sell on their work. Upload new jobs yourself.</p>
+      <ul class="s-list"><li>Up to five pages</li><li>Project gallery, updated from your phone</li><li>Local search basics for your towns</li><li>One AI mentoring session included</li></ul>
+      <a class="s-go" href="#contact" data-package="Showcase">Choose Showcase <span aria-hidden="true">→</span></a>
+    </div>
+  </article>
+  <article class="stratum s3">
+    <div class="s-top"><p class="s-kind">Mentoring · 03</p><p class="s-price">£TBC <small>3 sessions</small></p></div>
+    <h3 class="s-name"><span data-cut="block">Kickstart</span></h3>
+    <div class="s-bot">
+      <p class="s-desc">Get AI doing real work in your business, not just answering riddles.</p>
+      <ul class="s-list"><li>Find your three biggest time-sinks</li><li>Set up the right tools</li><li>Templates you keep and reuse</li><li>Check-in a month later</li></ul>
+      <a class="s-go" href="#contact" data-package="AI Kickstart">Choose Kickstart <span aria-hidden="true">→</span></a>
+    </div>
+  </article>
+</div>
+
+<section class="pk-tail" aria-label="Care plans">
   <p class="pk-note">Hosting and care plans available for every site. Prices coming soon. Ask and we'll tell you straight.</p>
 </section>
 
@@ -217,25 +223,20 @@
     <span class="hl" data-scatter>hel—</span>
     <span class="hl" data-scatter>lo.</span>
   </h2>
-  <div class="contact-grid">
-    <div class="c-copy">
-      <p class="big">Tell us a bit about your business. We'll come back within one working day with honest advice and a price.</p>
-      <p>Or email <a href="mailto:hello@shorefirestudio.com">hello@shorefirestudio.com</a></p>
-    </div>
-    <form id="quote" novalidate>
-      <label>Your name<input name="name" autocomplete="name" required></label>
-      <label>Business<input name="business" autocomplete="organization"></label>
-      <label>Email or phone<input name="contact" required></label>
-      <label>I'm interested in
-        <select name="package" id="package">
-          <option>Not sure yet</option><option>Launch</option><option>Showcase</option><option>AI Kickstart</option><option>Website + AI mentoring</option>
-        </select>
-      </label>
-      <label>Anything else?<textarea name="message" placeholder="What you do, where you work, what's not working."></textarea></label>
-      <button class="btn btn-fire" type="submit">Send it</button>
+  <form id="quote" class="madlib" novalidate>
+    <p>Hi, I'm <input name="name" autocomplete="name" placeholder="your name" aria-label="Your name" required>
+    from <input name="business" autocomplete="organization" placeholder="your business" aria-label="Business">.
+    I'm after <span class="sel"><select name="package" id="package" aria-label="I'm interested in">
+      <option>a bit of advice</option><option value="Launch">Launch</option><option value="Showcase">Showcase</option><option value="AI Kickstart">AI Kickstart</option><option value="Website + AI mentoring">a site and some AI help</option>
+    </select></span>.
+    Reach me on <input name="contact" placeholder="email or phone" aria-label="Email or phone" required>.
+    Oh, and <input name="message" class="long" placeholder="what's not working" aria-label="Anything else">.</p>
+    <div class="send-row">
+      <button type="submit" class="send"><span data-cut="block">Send it →</span></button>
       <p class="form-msg" role="status" aria-live="polite"></p>
-    </form>
-  </div>
+    </div>
+  </form>
+  <p class="c-alt">We reply within one working day with honest advice and a price. Rather email? <a href="mailto:hello@shorefirestudio.com">hello@shorefirestudio.com</a></p>
 </section>
 
 </main>
