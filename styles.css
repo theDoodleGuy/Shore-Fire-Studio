@@ -732,8 +732,8 @@ html.touch-paging body{overscroll-behavior-y:none}
 .lockup .lk-type{display:flex;flex-direction:column;align-items:flex-start;gap:calc(var(--wm) * .109);min-width:0}
 .lockup .lk-word{display:grid;height:auto;aspect-ratio:auto;transform:skewX(-10deg);font:900 var(--wm)/1 var(--display);letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap}
 .lockup .lk-word>span{grid-area:1/1}
-.lockup .lk-word .t{clip-path:polygon(0 0,100% 0,100% 42%,0 58%);transform:translate(.152em,-.0217em)}
-.lockup .lk-word .b{clip-path:polygon(0 58%,100% 42%,100% 100%,0 100%);transform:translate(-.152em,.0217em)}
+.lockup .lk-word .t{clip-path:polygon(0 0,100% 0,100% 42%,0 58%);transform:translate(.076em,-.0217em)}
+.lockup .lk-word .b{clip-path:polygon(0 58%,100% 42%,100% 100%,0 100%);transform:translate(-.076em,.0217em)}
 .lockup .lk-studio{font:600 max(calc(var(--wm) * .163),9.5px)/1 var(--sans);letter-spacing:calc(var(--wm) * .152);text-transform:uppercase;padding-left:calc(var(--wm) * .043);color:inherit}
 .brand{padding:9px 18px 9px 12px;gap:0}
 .brand .lockup{--wm:26px}
