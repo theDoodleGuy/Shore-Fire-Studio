@@ -155,7 +155,7 @@
     addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; }, { passive: true });
     (function follow() {
       cx += (tx - cx) * 0.25; cy += (ty - cy) * 0.25;
-      cur.style.transform = `translate(${cx - 13}px,${cy - 13}px)`;
+      cur.style.transform = `translate(${cx - 14}px,${cy - 14}px)`;
       requestAnimationFrame(follow);
     })();
     document.addEventListener('pointerover', e => cur.classList.toggle('hov', !!e.target.closest('a,button,summary,.ticket,[data-cut],.brick,input,select,textarea')));

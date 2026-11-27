@@ -630,3 +630,35 @@ html.touch-paging body{overscroll-behavior-y:none}
   .ctas .btn{padding:0 clamp(18px,1.6vw,26px)}
   .scroll-cue{left:var(--cx)}
 }
+
+/* =====================================================================
+   v0.8: wordmark logo, plain footer mark, S cursor, readable side rail
+   ===================================================================== */
+/* header: the wordmark on a midnight chip, readable over every scene */
+.brand{width:auto;height:48px;padding:0 16px;display:flex;align-items:center;background:var(--mid);color:var(--paper)}
+.brand:hover{transform:none}
+.brand .wm{display:block;height:24px;width:auto}
+@media(max-width:420px){.brand .wm{height:20px}}
+/* no animated mark in the hero */
+.live-hero{display:none!important}
+
+/* footer: single-colour wordmark, whole and readable */
+.foot{padding-bottom:40px}
+.foot-mark{display:block;margin-top:36px;color:var(--paper);max-width:720px}
+.foot-mark .wm{display:block;width:100%;height:auto}
+.foot-word{display:none}
+
+/* cursor: a full circle that splits into the S over anything clickable */
+#cur{mix-blend-mode:normal;width:28px;height:28px}
+#cur i{width:28px;height:14px;left:0;box-shadow:0 0 0 2px var(--mid);transition:transform .35s cubic-bezier(.6,-0.4,.3,1.5)}
+#cur i:first-child{top:0;border-radius:14px 14px 0 0;background:var(--orange);transform-origin:50% 100%;transform:rotate(-35deg)}
+#cur i:last-child{top:14px;border-radius:0 0 14px 14px;background:var(--aqua);transform-origin:50% 0;transform:rotate(-35deg)}
+#cur.hov i:first-child{transform:rotate(-35deg) translate(5.6px,-1px)}
+#cur.hov i:last-child{transform:rotate(-35deg) translate(-5.6px,1px)}
+
+/* side rail: a solid midnight strip so the caption reads on every scene */
+@media(min-width:1000px){
+  .rail{mix-blend-mode:normal;background:var(--mid);color:var(--paper);width:40px}
+  .rail-text,.depth{color:var(--paper)}
+  .depth b{color:var(--orange)}
+}
