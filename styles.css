@@ -102,7 +102,7 @@ a:hover [data-cut].in>.cb,[data-cut].in:hover>.cb{transform:translateX(-.12em)}
 .menu-foot{position:relative;margin:40px 0 0;font-weight:600;color:var(--muted-d)}
 
 /* ---------- HERO ---------- */
-.hero{--l:62%;--r:42%;height:100svh;min-height:640px;max-height:1100px;overflow:hidden;background:var(--orange);color:var(--mid)}
+.hero{--l:62%;--r:42%;height:var(--screen,100svh);min-height:640px;max-height:1100px;overflow:hidden;background:var(--orange);color:var(--mid)}
 .hero-water{position:absolute;inset:0;background:var(--mid);clip-path:polygon(0 var(--l),100% var(--r),100% 100%,0 100%)}
 .hero-layer{position:absolute;inset:0;padding:96px var(--pad) 0}
 .hero-layer.a{clip-path:polygon(0 0,100% 0,100% var(--r),0 var(--l))}
@@ -348,7 +348,7 @@ a:hover [data-cut].in>.cb,[data-cut].in:hover>.cb{transform:translateX(-.12em)}
    v0.5 SCENES: every colour change is one full screen, and lands cleanly
    ===================================================================== */
 html{scroll-snap-type:y proximity}
-.scene{min-height:100svh;scroll-snap-align:start;display:grid;align-content:center;padding-top:clamp(88px,12vh,120px);padding-bottom:clamp(48px,8vh,96px)}
+.scene{min-height:var(--screen,100svh);scroll-snap-align:start;display:grid;align-content:center;padding-top:clamp(88px,12vh,120px);padding-bottom:clamp(48px,8vh,96px)}
 .hero.scene{display:block;padding:0}
 .pun-sec.scene{gap:clamp(32px,6vh,64px)}
 .def{margin-top:0}
@@ -362,7 +362,7 @@ html{scroll-snap-type:y proximity}
 .svc{padding:0}
 .half.scene{align-content:center}
 @media(min-width:1000px){
-  .svc{min-height:100svh;scroll-snap-align:start;align-items:stretch;background:var(--paper)}
+  .svc{min-height:var(--screen,100svh);scroll-snap-align:start;align-items:stretch;background:var(--paper)}
   .half.scene{min-height:auto;scroll-snap-align:none}
   .fire-half,.water-half{transform:none;clip-path:none;margin-top:0}
   .water-half{clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
@@ -455,7 +455,7 @@ html.touch-paging body{overscroll-behavior-y:none}
 .slide.is-on{visibility:visible;pointer-events:auto;transition-delay:0s}
 
 /* the shot: two copies of one screenshot, cut and nudged apart like the S */
-.shot{position:relative;display:grid;margin-right:calc(var(--pad) * -1);aspect-ratio:4/5;max-height:52svh;overflow:visible}
+.shot{position:relative;display:grid;margin-right:calc(var(--pad) * -1);aspect-ratio:4/5;max-height:calc(var(--screen,100svh) * .52);overflow:visible}
 .shot>.ht,.shot>.hb{grid-area:1/1;overflow:hidden;transition:transform .9s var(--ease),opacity .6s ease}
 .shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left}
 .shot>.ht{clip-path:polygon(0 0,100% 0,100% 40%,0 60%);transform:translateX(2%)}
@@ -499,7 +499,7 @@ html.touch-paging body{overscroll-behavior-y:none}
 
 @media(min-width:1000px){
   .slide{grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);align-items:center;column-gap:clamp(32px,4vw,64px)}
-  .shot{order:2;aspect-ratio:16/10;max-height:62svh}
+  .shot{order:2;aspect-ratio:16/10;max-height:calc(var(--screen,100svh) * .62)}
   .w-text{order:1}
   .reel{grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);column-gap:clamp(32px,4vw,64px)}
   .slides{grid-column:1/-1}
@@ -517,7 +517,7 @@ html.touch-paging body{overscroll-behavior-y:none}
   .slide,.reel{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
   .w-name{font-size:clamp(32px,3vw,52px)}
 }
-@media(max-width:700px){.shot{max-height:43svh}}
+@media(max-width:700px){.shot{max-height:calc(var(--screen,100svh) * .43)}}
 @media(max-width:700px){.work.scene{padding-bottom:28px}}
 
 /* v0.6.1 reel: client screenshots stay whole; the brand moves into a diagonal wipe */

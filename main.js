@@ -1,6 +1,28 @@
 // Shore Fire Studio — storefront v0.2 "The living waterline"
 {
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- 0. Lock scene height to the screen ----
+  // Phones shrink the viewport when the keyboard opens; if scenes followed it, every scene
+  // would resize and the page would jump. So scenes use a fixed --screen height that only
+  // updates on real changes (rotation, window resize), never while a form field is focused.
+  {
+    const rootEl = document.documentElement;
+    let w = innerWidth, h = innerHeight;
+    const set = () => rootEl.style.setProperty('--screen', h + 'px');
+    set();
+    let rt;
+    addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = setTimeout(() => {
+        const a = document.activeElement, typingNow = a && a.matches('input, select, textarea');
+        if (innerWidth !== w) { w = innerWidth; h = innerHeight; set(); return; }   // rotation / window resize
+        if (typingNow) return;                                                      // keyboard: ignore
+        if (Math.abs(innerHeight - h) > 160 && innerHeight < h) return;             // keyboard still closing
+        if (innerHeight !== h) { h = Math.max(h, innerHeight); set(); }             // address bar settled
+      }, 250);
+    });
+  }
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
@@ -370,8 +392,8 @@
     // when the keyboard is really gone (no field focused for a moment), settle back onto the scene
     form.addEventListener('focusout', () => setTimeout(() => {
       if (typing()) return;
-      const list = segs(), g = list[segIndex(scrollY, list)];
-      glide(clamp(scrollY, g.t, g.end));
+      const sc = form.closest('.scene'), t = Math.round(sc.getBoundingClientRect().top + scrollY);
+      glide(clamp(scrollY, t, Math.min(maxY(), Math.max(t, t + sc.offsetHeight - innerHeight))));
     }, 600));
   }
 
