@@ -343,3 +343,69 @@ a:hover [data-cut].in>.cb,[data-cut].in:hover>.cb{transform:translateX(-.12em)}
 .hero.tear .hero-layer.a .w2{transform:translateX(calc(var(--d2,0)*1px - 24px)) skewX(-8deg)}
 @media(prefers-reduced-motion:reduce){.live-hero .top{transform:translate(40px,-6px)}.live-hero .bot{transform:translate(-40px,6px)}}
 @media(max-width:999px){.s-list{display:grid;gap:6px}.s-list li:not(:last-child)::after{content:none}.s-list li::before{content:"/";color:var(--acc);font-weight:600;margin-right:10px}}
+
+/* =====================================================================
+   v0.5 SCENES: every colour change is one full screen, and lands cleanly
+   ===================================================================== */
+html{scroll-snap-type:y proximity}
+.scene{min-height:100svh;scroll-snap-align:start;display:grid;align-content:center;padding-top:clamp(88px,12vh,120px);padding-bottom:clamp(48px,8vh,96px)}
+.hero.scene{display:block;padding:0}
+.pun-sec.scene{gap:clamp(32px,6vh,64px)}
+.def{margin-top:0}
+
+/* Manifesto gets its own midnight scene */
+.mani-sec{background:var(--mid);color:var(--paper);padding-left:var(--pad);padding-right:var(--pad)}
+.mani-sec .m3 s{color:var(--muted-d)}
+.mani-sec .m4 em{--cb:var(--aqua)}
+
+/* Services: each half is a scene on phones; side by side in one scene on desktop */
+.svc{padding:0}
+.half.scene{align-content:center}
+@media(min-width:1000px){
+  .svc{min-height:100svh;scroll-snap-align:start;align-items:stretch;background:var(--paper)}
+  .half.scene{min-height:auto;scroll-snap-align:none}
+  .fire-half,.water-half{transform:none;clip-path:none;margin-top:0}
+  .water-half{clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+}
+
+/* Packages: "Pick one" is its own scene, then one band per screen */
+.pk.scene{align-content:center}
+.pk-note{margin-top:clamp(28px,5vh,56px);font:600 clamp(16px,1.6vw,19px)/1.45 var(--sans);text-transform:none;letter-spacing:0;color:var(--muted)}
+.stratum.scene{grid-template-rows:auto 1fr auto;padding:0}
+.stratum .s-name{align-self:center}
+.s-top{padding-top:clamp(88px,12vh,120px)}
+
+/* Work moves to paper so neighbouring scenes always change colour */
+.work{background:var(--paper);color:var(--mid)}
+.work .brick{background:var(--mid);color:var(--paper)}
+.work .brick.e{background:transparent;outline-color:var(--mid)}
+.work-copy .tag{color:var(--aink)}
+.next span:first-child{color:var(--muted)}
+.work .blink{color:var(--deep)}
+
+/* How moves to midnight */
+.how{background:var(--mid);color:var(--paper)}
+.how .h2 [data-cut]{--cb:var(--aqua)}
+.how .st{color:var(--muted-d)}
+.stairs li:nth-child(even){border-color:var(--aqua)}
+
+.local.scene{padding-left:0;padding-right:0}
+.faq.scene,.contact.scene{align-content:center}
+
+/* Calmer on phones: smaller headlines, fewer ghosts in the water */
+@media(max-width:700px){
+  .h2{font-size:clamp(46px,13vw,80px)}
+  .mani{font-size:clamp(28px,8vw,48px)}
+  .glints i:nth-child(n+7){display:none}
+  .half .giant{opacity:.35}
+  .fire-half .giant{opacity:.3}
+}
+html{overflow-x:clip}
+.scene{grid-template-columns:minmax(0,1fr)}
+@media(min-width:1000px){.work.scene{grid-template-columns:1.3fr 1fr}}
+@media(max-width:700px){
+  .stairs{gap:18px;margin-top:28px}
+  .stairs h3{font-size:26px}
+  .stairs p{font-size:15px;line-height:1.45}
+  .local-copy{justify-items:start}
+}

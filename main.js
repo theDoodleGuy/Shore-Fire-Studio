@@ -87,7 +87,7 @@
     if (!vis.length) return;
     const el = vis[Math.floor(Math.random() * vis.length)];
     glitch(el);
-  }, 1800);
+  }, innerWidth < 700 ? 3600 : 2000);
 
   // ---- 8. Live loop: waterline, hero drift, sliding rows, depth gauge ----
   const r1 = $('.r1'), r2 = $('.r2'), local = $('.local'), depth = $('#depth');
@@ -95,7 +95,7 @@
   if (!calm) setInterval(() => {
     kick = (Math.random() > .5 ? 1 : -1) * (4 + Math.random() * 5); kx = (Math.random() - .5) * 60;
     hero.classList.add('tear'); setTimeout(() => { kick = 0; kx = 0; hero.classList.remove('tear'); }, 160 + Math.random() * 120);
-  }, 4200);
+  }, innerWidth < 700 ? 6000 : 4200);
   addEventListener('pointermove', e => { px = e.clientX / innerWidth; py = e.clientY / innerHeight; }, { passive: true });
   const small = () => innerWidth < 700;
   function frame(t) {
