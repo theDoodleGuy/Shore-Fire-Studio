@@ -108,11 +108,26 @@
     hero.classList.add('tear'); setTimeout(() => { kick = 0; kx = 0; hero.classList.remove('tear'); }, 160 + Math.random() * 120);
   }, innerWidth < 700 ? 6000 : 4200);
   addEventListener('pointermove', e => { px = e.clientX / innerWidth; py = e.clientY / innerHeight; }, { passive: true });
-  const small = () => innerWidth < 700;
+  // v0.7: aim the resting waterline through SITES / that at every size, so the colour change
+  // always happens inside the headline. Slope (L - R, in % of hero height) is set per band.
+  let baseL = 62, baseR = 42;
+  const aimWater = () => {
+    const hr = hero.getBoundingClientRect();
+    const w2 = $('.w2', layerA).getBoundingClientRect(), w3 = $('.w3', layerA).getBoundingClientRect();
+    if (!hr.height || !w2.height) return;
+    const wide = innerWidth >= 1000 && innerWidth / innerHeight >= 1.25;
+    const slope = innerWidth < 700 ? 8 : wide ? 20 : 12;
+    const x = (w2.left + Math.min(w2.right, innerWidth)) / 2;               // middle of SITES on screen
+    const y = ((w2.top + w2.bottom) / 2 + (w3.top + w3.bottom) / 2) / 2 - hr.top; // between SITES and that
+    baseL = y / hr.height * 100 + slope * x / innerWidth;
+    baseR = baseL - slope;
+  };
+  aimWater();
+  if (document.fonts) document.fonts.ready.then(aimWater);
+  let aimT; addEventListener('resize', () => { clearTimeout(aimT); aimT = setTimeout(aimWater, 300); });
   function frame(t) {
     const s = t / 1000, sy = scrollY;
     // waterline breathes and leans toward the pointer
-    const baseL = small() ? 43 : 62, baseR = small() ? 35 : 42;
     const l = kick + baseL + Math.sin(s * 0.5) * 2.5 + (py - 0.5) * 6 - sy * 0.02;
     const r = -kick * .6 + baseR + Math.sin(s * 0.37 + 1.3) * 2.5 + (py - 0.5) * 6 - (px - 0.5) * 6 - sy * 0.035;
     hero.style.setProperty('--l', l.toFixed(2) + '%');

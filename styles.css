@@ -6,7 +6,7 @@
    TYPE    Unbounded 900 oversized and cropped; Instrument Sans quiet underneath
 */
 :root{
-  --orange:#FF3D00; --deep:#C93000; --mid:#0A1A2F; --mid2:#13284A; --aqua:#00C2C7; --aink:#00767A;
+  --orange:#EE6B43; --deep:#B4492A; --mid:#0A1A2F; --mid2:#13284A; --aqua:#00C2C7; --aink:#00767A;
   --sodium:#FFD23F; --paper:#FFF8EE; --white:#fff; --muted:#4B5A6E; --muted-d:#A9B6C8;
   --display:"Unbounded","Archivo Black",system-ui,sans-serif; --sans:"Instrument Sans",system-ui,sans-serif;
   --ease:cubic-bezier(.2,.8,.2,1); --pad:max(6vw,20px);
@@ -550,3 +550,83 @@ html.touch-paging body{overscroll-behavior-y:none}
 .w-dot::after{background:var(--aink);clip-path:inset(54% 0 0 0);transform:rotate(-35deg)}
 .w-dot.on::before{opacity:1;transform:rotate(-35deg) translateX(2.5px)}
 .w-dot.on::after{opacity:1;transform:rotate(-35deg) translateX(-2.5px)}
+
+/* v0.7 COLOUR: orange softened to Ember #EE6B43 (less saturated, easier on the eyes).
+   Placeholder text on the orange contact scene switches to midnight for legibility. */
+.madlib input::placeholder{color:var(--mid);opacity:.45}
+
+/* =====================================================================
+   v0.7 HERO LAYOUT: the living waterline, recomposed so nothing collides
+   Every size is derived from the hero's own height (--hh) and the content
+   width, so the headline is sized by BOTH axes and never leaves the screen.
+   Bands:
+     phone   (<700)                 stacked; headline top, copy + CTAs bottom, mark beside the copy
+     stacked (700-999, or portrait) same idea, bigger type, copy column capped
+     desktop (>=1000 and landscape) headline left; right column = mark (top),
+                                    copy + CTAs (aligned to the WORK. line, in the water)
+     ultra-wide                     composition capped at ~1640px and centred
+   The waterline is aimed through SITES / that by main.js (section 8, aimWater).
+   ===================================================================== */
+.hero{
+  --hh:max(640px,var(--screen,100svh));
+  --cx:var(--pad);
+  --f:min(27vw,calc((var(--hh) - 430px)/2.4));
+  --top:96px;
+  max-height:none;
+}
+.hero-layer{padding:var(--top) var(--cx) 0}
+.hero .hw{font-size:var(--f);line-height:.8}
+.hero .w2{margin-left:10vw;margin-top:-.04em}
+.hero .w3{margin:.25em 0 .15em .3em}
+.hero .w4{font-size:.76em}
+
+/* phone: copy bottom-left, mark sits to the right of it (never over type) */
+.hero-sub{left:var(--cx);right:calc(var(--cx) + 24vw);max-width:none;bottom:calc(clamp(24px,4vh,48px) + 76px);gap:14px;color:var(--paper)}
+.hero-sub .hs{font-size:clamp(20px,6vw,28px)}
+.hero-sub .hp{color:var(--muted-d);font-size:16px;line-height:1.5}
+.hero-sub .spread{color:var(--orange)}
+.ctas{left:var(--cx);right:auto;bottom:clamp(24px,4vh,48px)}
+.live-hero{top:auto;left:auto;right:var(--cx);width:min(20vw,96px);
+  bottom:calc(clamp(24px,4vh,48px) + 76px)}
+.hero-layer .live-hero{position:absolute}
+
+/* stacked tablet / narrow or portrait desktop */
+@media(min-width:700px){
+  .hero{
+    --f:min(calc((100vw - 2*var(--cx)) / 4.5),calc((var(--hh) - 400px) / 2.6),230px);
+    --top:max(104px,calc((var(--hh) - 330px - 2.6*var(--f)) / 2 + 40px));
+  }
+  .hero .w2{margin-left:.7em}
+  .hero .w4{font-size:1em}
+  .hero-sub{right:auto;top:auto;width:min(560px,calc(100vw - 2*var(--cx) - 200px));bottom:calc(clamp(32px,5vh,56px) + 80px);gap:16px}
+  .hero-sub .hs{font-size:clamp(24px,3.4vw,34px)}
+  .hero-sub .hp{font-size:17px}
+  .ctas{bottom:clamp(32px,5vh,56px)}
+  .live-hero{width:clamp(110px,16vw,170px);bottom:clamp(32px,5vh,56px)}
+}
+
+/* desktop, landscape: headline left, copy column right */
+@media(min-width:1000px) and (min-aspect-ratio:5/4){
+  .hero{
+    --cx:max(var(--pad),calc((100vw - 1640px) / 2));
+    --col:clamp(260px,25vw,400px);
+    --gap:clamp(32px,4vw,72px);
+    --S:256px;                       /* copy + CTAs height budget */
+    --f:min(calc((100vw - 2*var(--cx) - var(--col) - var(--gap)) / 4.5),
+            calc((var(--hh) - 150px) / 2.62),
+            calc((var(--hh) - 150px - var(--S)) / 1.82),
+            270px);
+    --ch:calc(1.8*var(--f) + var(--S));   /* composition height */
+    --top:max(100px,calc((var(--hh) - var(--ch)) / 2 + 12px));
+    --colx:calc(100vw - var(--cx) - var(--col));
+  }
+  .hero-sub{left:var(--colx);right:auto;width:var(--col);top:calc(var(--top) + 1.8*var(--f) + 6px);bottom:auto;gap:12px;color:var(--paper)}
+  .hero-sub .hs{font-size:clamp(22px,2.1vw,34px)}
+  .hero-sub .hp{color:var(--muted-d);font-size:clamp(15px,1.1vw,17px)}
+  .hero-sub .spread{color:var(--orange)}
+  .ctas{left:min(var(--colx),calc(100vw - var(--cx) - 340px));right:auto;bottom:max(32px,calc(var(--hh) - var(--top) - var(--ch)))}
+  .live-hero{left:var(--colx);right:auto;bottom:auto;top:calc(var(--top) + .1*var(--f));
+    width:min(calc(var(--col) * .5),calc(1.8*var(--f) - .1*var(--f) - 40px),200px)}
+  .ctas .btn{padding:0 clamp(18px,1.6vw,26px)}
+  .scroll-cue{left:var(--cx)}
+}
