@@ -195,8 +195,9 @@
   const reel = $('.reel'), slidesEls = $$('.slide', reel), dots = $$('.w-dot', reel), wNow = $('#wNow');
   // split each screenshot into a top and bottom half
   $$('.shot', reel).forEach(sh => {
-    const inner = sh.innerHTML;
-    sh.innerHTML = `<div class="ht">${inner}</div><div class="hb">${inner}</div>`;
+    const e = $('.empty-in', sh);
+    if (e) { const w = document.createElement('div'); w.className = 'empty-wrap'; e.before(w); w.appendChild(e); }
+    sh.insertAdjacentHTML('beforeend', '<div class="wipe"><i></i><i></i></div>');
   });
   let wi = 0, auto = null, touched = false;
   const go = (n, dir) => {
@@ -215,6 +216,7 @@
     dots[wi].classList.remove('on'); dots[n].classList.add('on');
     wi = n; wNow.textContent = String(n + 1).padStart(2, '0');
     reveal(inName, 150);
+    if (!calm) { inn.classList.remove('wiping'); void inn.offsetWidth; inn.classList.add('wiping'); setTimeout(() => inn.classList.remove('wiping'), 1000); }
     if (!calm) setTimeout(() => { reel.classList.remove('tear'); void reel.offsetWidth; reel.classList.add('tear'); setTimeout(() => reel.classList.remove('tear'), 460); }, 700);
   };
   const stopAuto = () => { touched = true; clearInterval(auto); };

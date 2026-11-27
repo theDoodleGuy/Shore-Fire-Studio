@@ -519,3 +519,34 @@ html.touch-paging body{overscroll-behavior-y:none}
 }
 @media(max-width:700px){.shot{max-height:43svh}}
 @media(max-width:700px){.work.scene{padding-bottom:28px}}
+
+/* v0.6.1 reel: client screenshots stay whole; the brand moves into a diagonal wipe */
+.shot{overflow:hidden}
+.shot>picture,.shot>.empty-wrap{display:block;grid-area:1/1;transition:transform .9s var(--ease),opacity .6s ease}
+.shot>picture img{border:2px solid var(--mid)}
+.slide:not(.is-on) .shot>picture,.slide:not(.is-on) .shot>.empty-wrap{transform:translateX(var(--off,40%));opacity:0}
+.shot-empty{background:var(--mid);border:2px solid var(--mid)}
+.shot-empty .empty-in{height:100%}
+.shot-empty .empty-in span:nth-child(3){color:var(--aqua)}
+.wipe{position:absolute;inset:0;z-index:2;pointer-events:none;visibility:hidden}
+.wipe i{position:absolute;inset:0 -40% 0 -40%}
+.wipe i:first-child{background:var(--orange)}
+.wipe i:last-child{background:var(--mid)}
+.slide.is-on.wiping .wipe{visibility:visible}
+.slide.is-on.wiping .wipe i:first-child{animation:wipe .85s cubic-bezier(.7,0,.2,1) both}
+.slide.is-on.wiping .wipe i:last-child{animation:wipe .85s cubic-bezier(.7,0,.2,1) .09s both}
+@keyframes wipe{
+  0%{clip-path:polygon(0 0,12% 0,0 100%,0 100%)}
+  45%{clip-path:polygon(0 0,100% 0,88% 100%,0 100%)}
+  100%{clip-path:polygon(100% 0,100% 0,88% 100%,88% 100%)}
+}
+.reel.tear .slide.is-on .shot::after{animation:none}
+
+/* dots: plain rings; the current one is the cut-circle S in miniature */
+.w-dot{position:relative;width:14px;height:14px}
+.w-dot.on{background:transparent;border-color:transparent;transform:scale(1.25);border-radius:50%}
+.w-dot::before,.w-dot::after{content:"";position:absolute;inset:-2px;border-radius:50%;opacity:0;transition:transform .5s cubic-bezier(.6,-0.4,.3,1.5),opacity .3s}
+.w-dot::before{background:var(--orange);clip-path:inset(0 0 54% 0);transform:rotate(-35deg)}
+.w-dot::after{background:var(--aink);clip-path:inset(54% 0 0 0);transform:rotate(-35deg)}
+.w-dot.on::before{opacity:1;transform:rotate(-35deg) translateX(2.5px)}
+.w-dot.on::after{opacity:1;transform:rotate(-35deg) translateX(-2.5px)}
