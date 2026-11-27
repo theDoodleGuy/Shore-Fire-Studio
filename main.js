@@ -26,17 +26,6 @@
     gl.appendChild(g);
   }
 
-  // ---- 3. Bricks ----
-  const bricks = $('.bricks');
-  const pattern = 'fwnnfnnwnfnnnfwnnnfnwnnnf';
-  let k = 0;
-  bricks.innerHTML = bricks.dataset.bricks.split('|').map(line =>
-    `<div class="brow">${[...line].map(ch => {
-      const c = ch === ' ' ? 'e' : ({ f: 'f', w: 'w' }[pattern[k % pattern.length]] || '');
-      const out = `<span class="brick ${c}" style="--dl:${(k * 0.045).toFixed(2)}s">${ch === ' ' ? '' : ch}</span>`;
-      k++; return out;
-    }).join('')}</div>`).join('');
-
   // ---- 4. Scatter letters in "Say hel— lo." ----
   $$('[data-scatter]').forEach(el => { el.innerHTML = [...el.textContent].map(c => `<i>${c}</i>`).join(''); });
   const hello = $('.hello');
@@ -62,8 +51,8 @@
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
   }), { threshold: 0.2, rootMargin: '0px 0px -5% 0px' });
-  $$('[data-cut], .bricks, .stairs, .mani').forEach(el => {
-    if (el.closest('.pun') || el.closest('.menu')) return;
+  $$('[data-cut], .stairs, .mani').forEach(el => {
+    if (el.closest('.pun') || el.closest('.menu') || el.closest('.slide:not(.is-on)')) return;
     io.observe(el);
   });
 
@@ -202,6 +191,55 @@
     show(d);
   }));
 
+  // ---- Work reel ----
+  const reel = $('.reel'), slidesEls = $$('.slide', reel), dots = $$('.w-dot', reel), wNow = $('#wNow');
+  // split each screenshot into a top and bottom half
+  $$('.shot', reel).forEach(sh => {
+    const inner = sh.innerHTML;
+    sh.innerHTML = `<div class="ht">${inner}</div><div class="hb">${inner}</div>`;
+  });
+  let wi = 0, auto = null, touched = false;
+  const go = (n, dir) => {
+    n = (n + slidesEls.length) % slidesEls.length;
+    if (n === wi) return;
+    dir = dir || (n > wi ? 1 : -1);
+    reel.style.setProperty('--off', dir > 0 ? '45%' : '-45%');
+    const out = slidesEls[wi], inn = slidesEls[n];
+    const outName = $('.w-name [data-cut]', out), inName = $('.w-name [data-cut]', inn);
+    outName.classList.remove('in');
+    // start the incoming slide from the opposite side, then let it slide home
+    reel.style.setProperty('--off', dir > 0 ? '-45%' : '45%');
+    inn.classList.remove('is-on'); void inn.offsetWidth;
+    reel.style.setProperty('--off', dir > 0 ? '45%' : '-45%');
+    out.classList.remove('is-on'); inn.classList.add('is-on');
+    dots[wi].classList.remove('on'); dots[n].classList.add('on');
+    wi = n; wNow.textContent = String(n + 1).padStart(2, '0');
+    reveal(inName, 150);
+    if (!calm) setTimeout(() => { reel.classList.remove('tear'); void reel.offsetWidth; reel.classList.add('tear'); setTimeout(() => reel.classList.remove('tear'), 460); }, 700);
+  };
+  const stopAuto = () => { touched = true; clearInterval(auto); };
+  $('.w-next', reel).addEventListener('click', () => { stopAuto(); go(wi + 1, 1); });
+  $('.w-prev', reel).addEventListener('click', () => { stopAuto(); go(wi - 1, -1); });
+  dots.forEach((d, i) => d.addEventListener('click', () => { stopAuto(); go(i); }));
+  reel.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { stopAuto(); go(wi + 1, 1); }
+    if (e.key === 'ArrowLeft') { stopAuto(); go(wi - 1, -1); }
+  });
+  // reveal the first name when the scene arrives; auto-advance while it's on screen
+  new IntersectionObserver(es => {
+    const vis = es[0].isIntersecting;
+    if (vis) reveal($('.w-name [data-cut]', slidesEls[wi]));
+    clearInterval(auto);
+    if (vis && !touched && !calm) auto = setInterval(() => go(wi + 1, 1), 6000);
+  }, { threshold: 0.6 }).observe($('#work'));
+  // horizontal swipes on the reel (works with the vertical paging below)
+  let sx = 0, sy = 0;
+  reel.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  reel.addEventListener('touchend', e => {
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) { stopAuto(); go(wi + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); }
+  }, { passive: true });
+
   // ---- 12. Touch paging ----
   // Short scenes snap: drag ~10% (or flick) and it glides to the next.
   // Tall scenes scroll freely, and only hand over once you pull past their top or bottom edge.
@@ -232,7 +270,7 @@
     const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
     const typing = () => { const a = document.activeElement; return a && a.matches('input, select, textarea'); };
 
-    let anim = null, y0 = 0, s0 = 0, lastY = 0, lastT = 0, vel = 0, dragging = false;
+    let anim = null, y0 = 0, x0 = 0, axis = 'y', s0 = 0, lastY = 0, lastT = 0, vel = 0, dragging = false;
     const stopAnim = () => { if (anim) cancelAnimationFrame(anim); anim = null; };
     const glide = (to, dur) => {
       stopAnim();
@@ -252,11 +290,17 @@
       dragging = false;
       if (!menu.hidden || e.touches.length > 1 || typing() || e.target.closest('input, select, textarea')) return;
       stopAnim(); dragging = true;
-      y0 = lastY = e.touches[0].clientY; s0 = scrollY; lastT = performance.now(); vel = 0;
+      y0 = lastY = e.touches[0].clientY; x0 = e.touches[0].clientX; axis = e.target.closest('.reel') ? '' : 'y'; s0 = scrollY; lastT = performance.now(); vel = 0;
     }, { passive: true });
 
     addEventListener('touchmove', e => {
       if (!dragging) return;
+      if (!axis) {
+        const dx = Math.abs(e.touches[0].clientX - x0), dy = Math.abs(e.touches[0].clientY - y0);
+        if (dx < 8 && dy < 8) return;
+        axis = dx > dy ? 'x' : 'y';
+        if (axis === 'x') { dragging = false; return; }
+      }
       e.preventDefault();
       const y = e.touches[0].clientY, now = performance.now();
       vel = vel * 0.6 + ((lastY - y) / Math.max(1, now - lastT)) * 0.4; lastY = y; lastT = now;

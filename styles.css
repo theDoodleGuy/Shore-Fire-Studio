@@ -439,3 +439,83 @@ html.touch-paging body{overscroll-behavior-y:none}
 .qs details{transition:border-color .3s,transform .5s var(--ease)}
 .qs details[open]{transform:translateX(10px)}
 .qs .ans{overflow:hidden}
+
+/* =====================================================================
+   v0.6 WORK REEL: screenshots cut on the waterline, halves slide past
+   each other when the project changes
+   ===================================================================== */
+.work.scene{grid-template-columns:minmax(0,1fr)!important;align-content:center;gap:clamp(14px,2.5vh,28px);overflow:hidden}
+.w-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.w-head .tag{margin:0;color:var(--aink)}
+.w-count{margin:0;font:900 clamp(40px,6vw,88px)/.8 var(--display);letter-spacing:-.05em}
+.w-count span{font-size:.4em;color:var(--muted);margin-left:.1em;letter-spacing:0}
+.reel{outline:none;display:grid;gap:clamp(14px,2.5vh,28px)}
+.slides{display:grid}
+.slide{grid-area:1/1;display:grid;gap:clamp(12px,2vh,22px);visibility:hidden;pointer-events:none;transition:visibility 0s .9s}
+.slide.is-on{visibility:visible;pointer-events:auto;transition-delay:0s}
+
+/* the shot: two copies of one screenshot, cut and nudged apart like the S */
+.shot{position:relative;display:grid;margin-right:calc(var(--pad) * -1);aspect-ratio:4/5;max-height:52svh;overflow:visible}
+.shot>.ht,.shot>.hb{grid-area:1/1;overflow:hidden;transition:transform .9s var(--ease),opacity .6s ease}
+.shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left}
+.shot>.ht{clip-path:polygon(0 0,100% 0,100% 40%,0 60%);transform:translateX(2%)}
+.shot>.hb{clip-path:polygon(0 61.8%,100% 41.8%,100% 100%,0 100%);transform:translateX(-2%)}
+.shot picture{display:contents}
+.slide:not(.is-on) .shot>.ht{transform:translateX(var(--off,40%));opacity:0}
+.slide:not(.is-on) .shot>.hb{transform:translateX(calc(var(--off,40%) * -1));opacity:0}
+.reel.tear .slide.is-on .shot>.ht{animation:jT .45s steps(1,end)}
+.reel.tear .slide.is-on .shot>.hb{animation:jB .45s steps(1,end)}
+.shot::after{content:"";position:absolute;inset:0;background:var(--sodium);clip-path:polygon(0 60%,100% 40%,100% 41.8%,0 61.8%);opacity:0;pointer-events:none}
+.reel.tear .slide.is-on .shot::after{animation:spark .45s steps(1,end)}
+
+/* empty "your site here" frame */
+.shot-empty>.ht,.shot-empty>.hb{background:var(--mid)}
+.empty-in{display:grid;align-content:center;height:100%;padding:0 8%;font:900 clamp(48px,9vw,120px)/.85 var(--display);letter-spacing:-.05em;text-transform:uppercase;color:var(--paper)}
+.empty-in span:nth-child(2){color:var(--orange);margin-left:.6em}
+.shot-empty>.hb .empty-in{color:var(--aqua)}
+.shot-empty>.hb .empty-in span:nth-child(2){color:var(--paper)}
+
+/* text */
+.w-text{display:grid;gap:8px;justify-items:start}
+.w-text>*{transition:transform .7s var(--ease),opacity .5s ease;transition-delay:.15s}
+.slide:not(.is-on) .w-text>*{opacity:0;transform:translateY(14px);transition-delay:0s}
+.w-meta{margin:0;font:600 12px/1 var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--deep)}
+.w-name{margin:0;font:900 clamp(34px,5.6vw,88px)/.9 var(--display);letter-spacing:-.05em;text-transform:uppercase}
+.w-name [data-cut]{--cb:var(--aink)}
+.w-desc{margin:0;max-width:44ch;font-size:clamp(15px,1.5vw,19px);line-height:1.45}
+.w-visit{display:inline-flex;gap:10px;align-items:center;min-height:44px;font:900 clamp(15px,1.6vw,20px)/1 var(--display);text-transform:uppercase;letter-spacing:-.01em;text-decoration:none;border-bottom:4px solid var(--orange);transition:gap .35s var(--ease)}
+.w-visit:hover{gap:22px}
+
+/* controls: two half-circle arrows and cut-circle dots */
+.w-ctrl{display:flex;align-items:center;gap:18px}
+.w-arrow{width:56px;height:56px;border:0;background:var(--mid);color:var(--paper);font:900 22px/1 var(--display);cursor:pointer;transition:transform .35s var(--ease),background .3s}
+.w-prev{border-radius:56px 0 0 56px}
+.w-next{border-radius:0 56px 56px 0;background:var(--orange);color:var(--mid)}
+.w-prev:hover{transform:translateX(-4px)}.w-next:hover{transform:translateX(4px)}
+.w-dots{display:flex;gap:8px;order:-1;flex:1}
+.w-dot{width:14px;height:14px;padding:0;border:2px solid var(--mid);border-radius:50%;background:transparent;cursor:pointer;transition:transform .4s var(--ease),background .3s}
+.w-dot.on{background:var(--mid);transform:rotate(-35deg) scaleX(1.6);border-radius:14px 14px 4px 4px}
+@media(max-width:999px){.w-ctrl{justify-content:flex-end}.w-dots{flex:1}}
+
+@media(min-width:1000px){
+  .slide{grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);align-items:center;column-gap:clamp(32px,4vw,64px)}
+  .shot{order:2;aspect-ratio:16/10;max-height:62svh}
+  .w-text{order:1}
+  .reel{grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);column-gap:clamp(32px,4vw,64px)}
+  .slides{grid-column:1/-1}
+  .w-ctrl{grid-column:1}
+}
+@media(max-width:700px){
+  .shot{aspect-ratio:4/5;max-height:46svh}
+  .w-name{font-size:clamp(30px,9vw,44px)}
+  .w-desc{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){.slide:not(.is-on) .w-text>*,.slide:not(.is-on) .shot>*{transition:none}}
+.shot img{box-sizing:border-box;border:2px solid var(--mid)}
+.shot-empty>.ht,.shot-empty>.hb{border:2px solid var(--mid)}
+@media(min-width:1000px){
+  .slide,.reel{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+  .w-name{font-size:clamp(32px,3vw,52px)}
+}
+@media(max-width:700px){.shot{max-height:43svh}}
+@media(max-width:700px){.work.scene{padding-bottom:28px}}
