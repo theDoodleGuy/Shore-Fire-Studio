@@ -856,3 +856,29 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 /* mark slide halved (each half 10% of D): the S dot in the work reel follows */
 .w-dot.on::before{transform:rotate(-35deg) translateX(1.4px)}
 .w-dot.on::after{transform:rotate(-35deg) translateX(-1.4px)}
+
+/* =====================================================================
+   v0.16 BUTTON HOVER: no drop shadows. On hover a new colour sweeps in
+   behind the label with a slanted leading edge, rising left to right like the
+   waterline. Fire buttons fill with water; dark and outline buttons fill with fire or paper.
+   Works for the header chips too.
+   ===================================================================== */
+.btn,.chip{position:relative;isolation:isolate;overflow:hidden;transition:color .35s ease,border-color .35s ease}
+.btn::before,.chip::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--sweep,var(--aqua));
+  clip-path:polygon(-30% 0,-30% 0,-55% 100%,-55% 100%);transition:clip-path .45s cubic-bezier(.7,0,.2,1)}
+.btn:hover::before,.chip:hover::before,.btn:focus-visible::before,.chip:focus-visible::before{clip-path:polygon(-30% 0,135% 0,110% 100%,-55% 100%)}
+.btn:hover,.btn-fire:hover,.btn-ink:hover,.chip:hover{transform:none;box-shadow:none}
+.ticket .btn:hover{box-shadow:none}
+/* fire → water */
+.btn-fire,.chip-fire{--sweep:var(--aqua)}
+.btn-fire:hover,.chip-fire:hover,.btn-fire:focus-visible,.chip-fire:focus-visible{color:var(--mid)}
+/* dark → fire */
+.btn-ink,.chip-ink{--sweep:var(--orange)}
+.btn-ink:hover,.chip-ink:hover,.btn-ink:focus-visible,.chip-ink:focus-visible{color:var(--mid)}
+/* outline on dark → paper */
+.btn-line{--sweep:var(--paper)}
+.btn-line:hover,.btn-line:focus-visible{color:var(--mid);border-color:var(--paper)}
+@media(prefers-reduced-motion:reduce){.btn::before,.chip::before{transition:none}}
+.btn::before,.chip::before{inset:-2px}
+.chip-ink{--sweep:var(--paper)}
+.btn-fire:hover,.btn-fire:focus-visible{border-color:var(--aqua)}.btn-ink:hover,.btn-ink:focus-visible{border-color:var(--orange)}
