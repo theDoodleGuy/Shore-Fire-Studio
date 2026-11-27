@@ -409,3 +409,21 @@ html{overflow-x:clip}
   .stairs p{font-size:15px;line-height:1.45}
   .local-copy{justify-items:start}
 }
+
+/* v0.5.1 snapping: firm, one scene per swipe, footer reachable */
+html{scroll-snap-type:y mandatory}
+.scene{scroll-snap-stop:always}
+.foot{scroll-snap-align:end}
+@media(max-width:700px){
+  .hello{font-size:clamp(60px,19vw,90px)}
+  .madlib{margin-top:28px}
+  .madlib p{font-size:clamp(21px,6.2vw,28px);line-height:1.5}
+  .send{font-size:clamp(48px,14vw,72px)}
+  .send-row{margin-top:22px}
+  .c-alt{margin-top:22px;font-size:15px}
+  .how.scene{padding-top:84px;padding-bottom:32px}
+  .stairs{gap:14px;margin-top:22px}
+  .stairs li{padding-top:10px;border-top-width:4px}
+  .st{margin-bottom:6px}
+  .stairs h3{font-size:24px;margin-bottom:4px}
+}
