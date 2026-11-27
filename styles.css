@@ -823,3 +823,33 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 #cur.hov .c-dot{transform:scale(.25);opacity:0}
 #cur.hov .c-hand{transform:scale(1) rotate(0);opacity:1}
 @media(prefers-reduced-motion:reduce){.row .rt{animation:none}}
+
+/* =====================================================================
+   v0.15 FAQ: heading column + a clean ruled list, no zigzag boxes.
+   The indicator is the mark: a cut circle that slides into the S when open.
+   ===================================================================== */
+.faq.scene{align-content:center}
+.faq-aside{margin:18px 0 0;font-weight:600;color:var(--muted);max-width:30ch}
+.faq-aside a{color:var(--deep);font-weight:600}
+.qs{display:block;margin-top:clamp(24px,4vh,48px);border-bottom:2px solid var(--mid)}
+.qs details,.qs details:nth-child(even){max-width:none;width:auto;margin:0;border:0;border-top:2px solid var(--mid);border-radius:0;transform:none!important}
+.qs details[open]{border-color:var(--mid)}
+.qs summary{padding:clamp(14px,2.2vh,22px) 0;gap:24px;font-size:clamp(17px,1.7vw,24px)}
+@media(hover:hover){.qs summary:hover{color:var(--deep)}}
+.qs details[open] summary{color:var(--deep)}
+.qs summary::after{flex:0 0 28px;height:28px;border-radius:0;clip-path:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-170 -170 340 340'%3E%3Cg transform='rotate(-35)'%3E%3Cpath d='M-100 0A100 100 0 0 1 100 0Z' transform='translate(0,-6)' fill='%230A1A2F'/%3E%3Cpath d='M100 0A100 100 0 0 1-100 0Z' transform='translate(0,6)' fill='%230A1A2F'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;transition:transform .45s cubic-bezier(.6,-0.4,.3,1.5)}
+.qs details[open] summary::after{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-170 -170 340 340'%3E%3Cg transform='rotate(-35)'%3E%3Cpath d='M-100 0A100 100 0 0 1 100 0Z' transform='translate(40,-4)' fill='%23FF3D00'/%3E%3Cpath d='M100 0A100 100 0 0 1-100 0Z' transform='translate(-40,4)' fill='%2300767A'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;transform:scale(1.12)}
+.qs p{padding:0 0 22px;color:var(--muted);font-size:clamp(16px,1.2vw,18px)}
+@media(min-width:1000px){
+  .faq.scene{grid-template-columns:minmax(0,.85fr) minmax(0,1.35fr);column-gap:clamp(40px,6vw,120px);align-items:start}
+  .faq .h2{grid-column:1;grid-row:1}
+  .faq-aside{grid-column:1;grid-row:2}
+  .qs{grid-column:2;grid-row:1 / span 2;margin-top:0;align-self:center}
+  .faq .h2 .indent{margin-left:.6em}
+  .faq .h2{font-size:clamp(44px,min(6.4vw,12vh),120px)}
+}
+@media(min-width:1000px){
+  .faq .h2{font-size:clamp(36px,min(calc((100vw - 2*var(--pad) - 6vw) * .386 / 7.6),12vh),110px)}
+  .faq .h2 .indent{margin-left:.45em}
+}
+@media(min-width:1000px){.faq .h2{align-self:end}.faq-aside{align-self:start}}
