@@ -202,24 +202,44 @@
     show(d);
   }));
 
-  // ---- 12. Touch paging: drag a little way toward the next scene and it glides there ----
+  // ---- 12. Touch paging ----
+  // Short scenes snap: drag ~10% (or flick) and it glides to the next.
+  // Tall scenes scroll freely, and only hand over once you pull past their top or bottom edge.
+  // While a form field is focused, paging steps aside and the field is kept in view above the keyboard.
   if (matchMedia('(pointer: coarse)').matches) {
     const root = document.documentElement;
     root.classList.add('touch-paging');
     const scenes = $$('.scene');
     const maxY = () => root.scrollHeight - innerHeight;
-    const stops = () => {
-      const t = scenes.map(el => Math.round(el.getBoundingClientRect().top + scrollY));
-      t.push(maxY());                                    // the footer
-      return [...new Set(t.map(v => Math.min(v, maxY())))].sort((a, b) => a - b);
+    const segs = () => {
+      const m = maxY();
+      const list = scenes.map(el => {
+        const t = Math.round(el.getBoundingClientRect().top + scrollY);
+        return { t: Math.min(t, m), end: Math.min(m, Math.max(t, t + el.offsetHeight - innerHeight)) };
+      });
+      const last = list[list.length - 1];
+      if (m > last.end + 1) list.push({ t: m, end: m });        // the footer
+      return list;
     };
-    const nearest = (y, list) => list.reduce((best, v) => Math.abs(v - y) < Math.abs(best - y) ? v : best, list[0]);
-    let anim = null, y0 = 0, s0 = 0, t0 = 0, lastY = 0, lastT = 0, vel = 0, dragging = false;
+    const segIndex = (y, list) => {
+      let best = 0, bd = Infinity;
+      list.forEach((g, i) => {
+        const d = y < g.t ? g.t - y : y > g.end ? y - g.end : 0;
+        if (d < bd) { bd = d; best = i; }
+      });
+      return best;
+    };
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+    const typing = () => { const a = document.activeElement; return a && a.matches('input, select, textarea'); };
+
+    let anim = null, y0 = 0, s0 = 0, lastY = 0, lastT = 0, vel = 0, dragging = false;
     const stopAnim = () => { if (anim) cancelAnimationFrame(anim); anim = null; };
-    const glide = to => {
+    const glide = (to, dur) => {
       stopAnim();
-      const from = scrollY, d = to - from, dur = Math.min(700, 380 + Math.abs(d) * 0.25), st = performance.now();
-      const ease = x => 1 - Math.pow(1 - x, 4);
+      const from = scrollY, d = to - from;
+      if (Math.abs(d) < 1) return;
+      dur = dur || Math.min(700, 380 + Math.abs(d) * 0.25);
+      const st = performance.now(), ease = x => 1 - Math.pow(1 - x, 4);
       const step = now => {
         const k = Math.min(1, (now - st) / dur);
         scrollTo({ top: from + d * ease(k), behavior: 'instant' });
@@ -227,33 +247,65 @@
       };
       anim = requestAnimationFrame(step);
     };
-    const blocked = e => !menu.hidden || e.target.closest('select, textarea');
+
     addEventListener('touchstart', e => {
-      if (blocked(e) || e.touches.length > 1) { dragging = false; return; }
+      dragging = false;
+      if (!menu.hidden || e.touches.length > 1 || typing() || e.target.closest('input, select, textarea')) return;
       stopAnim(); dragging = true;
-      y0 = lastY = e.touches[0].clientY; s0 = scrollY; t0 = lastT = performance.now(); vel = 0;
+      y0 = lastY = e.touches[0].clientY; s0 = scrollY; lastT = performance.now(); vel = 0;
     }, { passive: true });
+
     addEventListener('touchmove', e => {
       if (!dragging) return;
       e.preventDefault();
       const y = e.touches[0].clientY, now = performance.now();
-      vel = (lastY - y) / Math.max(1, now - lastT); lastY = y; lastT = now;
-      scrollTo({ top: Math.max(0, Math.min(maxY(), s0 + (y0 - y))), behavior: 'instant' });
+      vel = vel * 0.6 + ((lastY - y) / Math.max(1, now - lastT)) * 0.4; lastY = y; lastT = now;
+      scrollTo({ top: clamp(s0 + (y0 - y), 0, maxY()), behavior: 'instant' });
     }, { passive: false });
+
     addEventListener('touchend', () => {
       if (!dragging) return; dragging = false;
-      const list = stops(), anchor = nearest(s0, list), i = list.indexOf(anchor);
-      const moved = scrollY - anchor, need = innerHeight * 0.1;
-      let target = anchor;
-      if (moved > need || vel > 0.3) target = list[Math.min(list.length - 1, i + 1)];
-      else if (moved < -need || vel < -0.3) target = list[Math.max(0, i - 1)];
-      glide(target);
+      const list = segs(), i = segIndex(s0, list), g = list[i], y = scrollY, need = innerHeight * 0.1;
+      if (y > g.end + 0.5) {                                   // pulled past the bottom edge
+        const next = list[i + 1];
+        glide(next && (y - g.end > need || vel > 0.3) ? next.t : g.end);
+      } else if (y < g.t - 0.5) {                              // pulled past the top edge
+        const prev = list[i - 1];
+        glide(prev && (g.t - y > need || vel < -0.3) ? prev.end : g.t);
+      } else if (g.end > g.t) {                                // inside a tall scene: free scroll with a little momentum
+        glide(clamp(y + vel * 320, g.t, g.end), 600);
+      }
     });
-    // in-page links (menu, buttons) glide too
+
+    // In-page links glide too
     $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
       const el = $(a.getAttribute('href')); if (!el) return;
       e.preventDefault(); setTimeout(() => glide(Math.min(maxY(), Math.round(el.getBoundingClientRect().top + scrollY))), 30);
     }));
+
+    // Keep the field being typed in view, about a third of the way down the space above the keyboard
+    const vv = window.visualViewport;
+    const keepInView = () => {
+      const f = document.activeElement;
+      if (!f || !f.matches('input, select, textarea')) return;
+      const r = f.getBoundingClientRect(), h = vv ? vv.height : innerHeight, top = vv ? vv.offsetTop : 0;
+      const want = h * 0.32;
+      const off = (r.top - top) - want;
+      if (r.top - top < 60 || r.bottom - top > h - 24 || Math.abs(off) > h * 0.25) {
+        stopAnim(); scrollTo({ top: clamp(scrollY + off, 0, maxY()), behavior: 'smooth' });
+      }
+    };
+    let kv;
+    const soon = () => { clearTimeout(kv); kv = setTimeout(keepInView, 320); };
+    form.addEventListener('focusin', soon);
+    form.addEventListener('input', () => { clearTimeout(kv); kv = setTimeout(keepInView, 60); });
+    if (vv) vv.addEventListener('resize', soon);
+    // When the keyboard closes, settle back onto the scene
+    form.addEventListener('focusout', () => setTimeout(() => {
+      if (typing()) return;
+      const list = segs(), g = list[segIndex(scrollY, list)];
+      glide(clamp(scrollY, g.t, g.end));
+    }, 350));
   }
 
   $('#yr').textContent = new Date().getFullYear();
