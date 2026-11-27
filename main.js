@@ -329,29 +329,50 @@
       e.preventDefault(); setTimeout(() => glide(Math.min(maxY(), Math.round(el.getBoundingClientRect().top + scrollY))), 30);
     }));
 
-    // Keep the field being typed in view, about a third of the way down the space above the keyboard
+    // Form on phones: we own the scrolling, so moving between fields is one smooth glide.
+    // Taps and the keyboard's Next key focus fields without the browser's own jump.
     const vv = window.visualViewport;
+    const fields = $$('input, select', form);
     const keepInView = () => {
       const f = document.activeElement;
       if (!f || !f.matches('input, select, textarea')) return;
       const r = f.getBoundingClientRect(), h = vv ? vv.height : innerHeight, top = vv ? vv.offsetTop : 0;
-      const want = h * 0.32;
-      const off = (r.top - top) - want;
-      if (r.top - top < 60 || r.bottom - top > h - 24 || Math.abs(off) > h * 0.25) {
-        stopAnim(); scrollTo({ top: clamp(scrollY + off, 0, maxY()), behavior: 'smooth' });
-      }
+      const y = r.top - top;
+      if (y > h * 0.14 && r.bottom - top < h * 0.62) return;      // already comfortably in view
+      glide(clamp(scrollY + (y - h * 0.3), 0, maxY()), 450);
     };
     let kv;
-    const soon = () => { clearTimeout(kv); kv = setTimeout(keepInView, 320); };
-    form.addEventListener('focusin', soon);
-    form.addEventListener('input', () => { clearTimeout(kv); kv = setTimeout(keepInView, 60); });
-    if (vv) vv.addEventListener('resize', soon);
-    // When the keyboard closes, settle back onto the scene
+    const soon = (ms = 120) => { clearTimeout(kv); kv = setTimeout(keepInView, ms); };
+    const focusField = f => {
+      f.focus({ preventScroll: true });
+      if (f.setSelectionRange && f.type !== 'email') { const n = f.value.length; try { f.setSelectionRange(n, n); } catch (_) {} }
+      soon(60);
+    };
+    fields.forEach((f, i) => {
+      if (f.tagName === 'INPUT') {
+        f.setAttribute('enterkeyhint', i === fields.length - 1 ? 'done' : 'next');
+        // tap: focus without the browser's scroll-into-view jump
+        f.addEventListener('touchend', e => {
+          if (document.activeElement === f) return;
+          e.preventDefault(); focusField(f);
+        });
+      }
+      f.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        const next = fields[i + 1];
+        if (next) focusField(next); else f.blur();
+      });
+    });
+    form.addEventListener('input', () => soon(60));
+    // keyboard opening or closing changes the visible area: re-check once it settles
+    if (vv) vv.addEventListener('resize', () => soon(200));
+    // when the keyboard is really gone (no field focused for a moment), settle back onto the scene
     form.addEventListener('focusout', () => setTimeout(() => {
       if (typing()) return;
       const list = segs(), g = list[segIndex(scrollY, list)];
       glide(clamp(scrollY, g.t, g.end));
-    }, 350));
+    }, 600));
   }
 
   $('#yr').textContent = new Date().getFullYear();
