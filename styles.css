@@ -427,3 +427,7 @@ html{scroll-snap-type:y mandatory}
   .st{margin-bottom:6px}
   .stairs h3{font-size:24px;margin-bottom:4px}
 }
+
+/* v0.5.2: on touch screens, paging is handled in script (CSS snap is unreliable in mobile web views) */
+html.touch-paging{scroll-snap-type:none;scroll-behavior:auto;overscroll-behavior-y:none}
+html.touch-paging body{overscroll-behavior-y:none}

@@ -179,5 +179,59 @@
     msg.textContent = 'Your email app should open with everything filled in. If not, email hello@shorefirestudio.com.';
   });
 
+  // ---- 12. Touch paging: drag a little way toward the next scene and it glides there ----
+  if (matchMedia('(pointer: coarse)').matches) {
+    const root = document.documentElement;
+    root.classList.add('touch-paging');
+    const scenes = $$('.scene');
+    const maxY = () => root.scrollHeight - innerHeight;
+    const stops = () => {
+      const t = scenes.map(el => Math.round(el.getBoundingClientRect().top + scrollY));
+      t.push(maxY());                                    // the footer
+      return [...new Set(t.map(v => Math.min(v, maxY())))].sort((a, b) => a - b);
+    };
+    const nearest = (y, list) => list.reduce((best, v) => Math.abs(v - y) < Math.abs(best - y) ? v : best, list[0]);
+    let anim = null, y0 = 0, s0 = 0, t0 = 0, lastY = 0, lastT = 0, vel = 0, dragging = false;
+    const stopAnim = () => { if (anim) cancelAnimationFrame(anim); anim = null; };
+    const glide = to => {
+      stopAnim();
+      const from = scrollY, d = to - from, dur = Math.min(700, 380 + Math.abs(d) * 0.25), st = performance.now();
+      const ease = x => 1 - Math.pow(1 - x, 4);
+      const step = now => {
+        const k = Math.min(1, (now - st) / dur);
+        scrollTo({ top: from + d * ease(k), behavior: 'instant' });
+        anim = k < 1 ? requestAnimationFrame(step) : null;
+      };
+      anim = requestAnimationFrame(step);
+    };
+    const blocked = e => !menu.hidden || e.target.closest('select, textarea');
+    addEventListener('touchstart', e => {
+      if (blocked(e) || e.touches.length > 1) { dragging = false; return; }
+      stopAnim(); dragging = true;
+      y0 = lastY = e.touches[0].clientY; s0 = scrollY; t0 = lastT = performance.now(); vel = 0;
+    }, { passive: true });
+    addEventListener('touchmove', e => {
+      if (!dragging) return;
+      e.preventDefault();
+      const y = e.touches[0].clientY, now = performance.now();
+      vel = (lastY - y) / Math.max(1, now - lastT); lastY = y; lastT = now;
+      scrollTo({ top: Math.max(0, Math.min(maxY(), s0 + (y0 - y))), behavior: 'instant' });
+    }, { passive: false });
+    addEventListener('touchend', () => {
+      if (!dragging) return; dragging = false;
+      const list = stops(), anchor = nearest(s0, list), i = list.indexOf(anchor);
+      const moved = scrollY - anchor, need = innerHeight * 0.1;
+      let target = anchor;
+      if (moved > need || vel > 0.3) target = list[Math.min(list.length - 1, i + 1)];
+      else if (moved < -need || vel < -0.3) target = list[Math.max(0, i - 1)];
+      glide(target);
+    });
+    // in-page links (menu, buttons) glide too
+    $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      const el = $(a.getAttribute('href')); if (!el) return;
+      e.preventDefault(); setTimeout(() => glide(Math.min(maxY(), Math.round(el.getBoundingClientRect().top + scrollY))), 30);
+    }));
+  }
+
   $('#yr').textContent = new Date().getFullYear();
 }
