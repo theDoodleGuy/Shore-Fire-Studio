@@ -882,3 +882,6 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 .btn::before,.chip::before{inset:-2px}
 .chip-ink{--sweep:var(--paper)}
 .btn-fire:hover,.btn-fire:focus-visible{border-color:var(--aqua)}.btn-ink:hover,.btn-ink:focus-visible{border-color:var(--orange)}
+/* header quote chip: keep its border until the sweep reaches it, so the sweep itself recolours the border */
+.chip-fire:hover,.chip-fire:focus-visible{box-shadow:inset 0 0 0 2px var(--mid)}
+.chip::before{inset:0}
