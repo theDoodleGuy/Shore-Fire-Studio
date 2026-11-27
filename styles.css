@@ -32,8 +32,22 @@ section{position:relative}
 [data-cut].in>.cb{transform:translateX(-.035em);opacity:1}
 a:hover [data-cut].in>.ct,[data-cut].in:hover>.ct{transform:translateX(.12em)}
 a:hover [data-cut].in>.cb,[data-cut].in:hover>.cb{transform:translateX(-.12em)}
-[data-cut].jolt>.ct{transition-duration:.18s;transform:translateX(.16em) translateY(-.02em)}
-[data-cut].jolt>.cb{transition-duration:.18s;transform:translateX(-.16em) translateY(.02em)}
+/* Glitch: slices tear sideways, colour ghosts flash, the cut sparks */
+[data-cut]>.g1,[data-cut]>.g2{grid-area:1/1;opacity:0;pointer-events:none}
+[data-cut]>.g1{color:var(--g1,var(--orange))}
+[data-cut]>.g2{color:var(--g2,var(--aqua))}
+[data-cut]::after{content:"";position:absolute;inset:0;background:var(--sodium);clip-path:polygon(-5% 59%,105% 41%,105% 43.5%,-5% 61.5%);opacity:0;pointer-events:none}
+[data-cut].glitch>.g1{animation:gA .5s steps(1,end) both}
+[data-cut].glitch>.g2{animation:gB .5s steps(1,end) both}
+[data-cut].glitch>.ct{animation:jT .5s steps(1,end)}
+[data-cut].glitch>.cb{animation:jB .5s steps(1,end)}
+[data-cut].glitch::after{animation:spark .5s steps(1,end)}
+@keyframes gA{0%{opacity:1;clip-path:inset(8% 0 78% 0);transform:translateX(-.09em)}14%{clip-path:inset(52% 0 30% 0);transform:translateX(.14em)}28%{clip-path:inset(28% 0 60% 0);transform:translateX(-.05em)}42%{clip-path:inset(78% 0 6% 0);transform:translateX(.18em)}56%{clip-path:inset(4% 0 86% 0);transform:translateX(-.12em)}70%{clip-path:inset(44% 0 44% 0);transform:translateX(.07em)}84%{opacity:1;clip-path:inset(64% 0 22% 0);transform:translateX(-.2em)}100%{opacity:0}}
+@keyframes gB{0%{opacity:1;clip-path:inset(62% 0 20% 0);transform:translateX(.1em)}14%{clip-path:inset(14% 0 70% 0);transform:translateX(-.16em)}28%{clip-path:inset(70% 0 12% 0);transform:translateX(.04em)}42%{clip-path:inset(34% 0 52% 0);transform:translateX(-.1em)}56%{clip-path:inset(84% 0 2% 0);transform:translateX(.2em)}70%{clip-path:inset(20% 0 66% 0);transform:translateX(-.06em)}84%{opacity:0}100%{opacity:0}}
+@keyframes jT{0%{transform:translateX(.22em) skewX(-14deg)}20%{transform:translateX(-.06em)}40%{transform:translateX(.3em) skewX(8deg)}60%{transform:translateX(.02em)}80%{transform:translateX(.14em) skewX(-6deg)}}
+@keyframes jB{0%{transform:translateX(-.18em) skewX(10deg)}20%{transform:translateX(.08em)}40%{transform:translateX(-.28em)}60%{transform:translateX(-.02em) skewX(-8deg)}80%{transform:translateX(-.12em)}}
+@keyframes spark{0%,40%,80%{opacity:1}20%,60%,100%{opacity:0}}
+.fire-half [data-cut],.menu [data-cut],.pk-h .indent{--g1:var(--paper)}
 
 /* ---------- Type ---------- */
 .h2{font:900 clamp(52px,13vw,150px)/.86 var(--display);letter-spacing:-.045em;text-transform:uppercase;margin:0}
@@ -70,7 +84,7 @@ a:hover [data-cut].in>.cb,[data-cut].in:hover>.cb{transform:translateX(-.12em)}
 .top{position:fixed;inset:0 0 auto;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:16px var(--pad) 0;pointer-events:none}
 .top>*{pointer-events:auto}
 .brand{display:block;width:48px;height:48px;background:var(--mid);border-radius:4px;padding:6px;transition:transform .4s var(--ease)}
-.brand:hover{transform:rotate(-8deg)}
+
 .top-r{display:flex;gap:10px}
 .chip{min-height:48px;display:inline-flex;align-items:center;padding:0 18px;border:0;border-radius:4px;font:600 13px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;text-decoration:none}
 .chip-fire{background:var(--orange);color:var(--mid);box-shadow:inset 0 0 0 2px var(--mid)}
@@ -99,36 +113,52 @@ a:hover [data-cut].in>.cb,[data-cut].in:hover>.cb{transform:translateX(-.12em)}
 .w1{transform:translateX(calc(var(--d1,0)*1px))}
 .w2{margin-left:18vw;margin-top:-.04em;transform:translateX(calc(var(--d2,0)*1px))}
 .w3{font-size:.18em;letter-spacing:.3em;font-weight:800;margin:.25em 0 .15em 4vw;transform:rotate(-8deg);transform-origin:left}
-.w4{display:flex;align-items:center;gap:.04em;transform:translateX(calc(var(--d1,0)*-1px))}
-.w4 span:last-child{transform:skewX(-10deg)}
-.hm{width:.82em;height:.82em;margin:0 .02em;animation:spin 24s var(--ease) infinite}
-@keyframes spin{0%,40%{transform:rotate(0)}50%,90%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}
+.w4{transform:translateX(calc(var(--d1,0)*-1px)) skewX(-10deg);transform-origin:left bottom}
+/* The living mark: a cut circle that spins, splits into the S, and closes again */
+.live{display:block;overflow:visible}
+.live path{fill:currentColor}
+.live .spin{transform-box:fill-box;transform-origin:center}
+.live-hero{position:absolute;right:4vw;top:44%;width:min(14vw,210px);height:auto;aspect-ratio:1}
+.live-hero .spin{animation:mspin 8s cubic-bezier(.65,0,.35,1) infinite}
+.live-hero .top{animation:mtop 8s infinite}
+.live-hero .bot{animation:mbot 8s infinite}
+.hero-layer.b .live-hero .top{color:var(--orange)}
+.hero-layer.b .live-hero .bot{color:var(--aqua)}
+@keyframes mspin{0%{transform:rotate(0)}14%{transform:rotate(200deg)}30%,62%{transform:rotate(180deg)}78%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}
+@keyframes mtop{0%,16%{transform:translate(0,-3px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}32%,60%{transform:translate(40px,-6px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}76%,100%{transform:translate(0,-3px)}}
+@keyframes mbot{0%,16%{transform:translate(0,3px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}32%,60%{transform:translate(-40px,6px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}76%,100%{transform:translate(0,3px)}}
+.live-brand{width:36px;height:36px}
+.live-brand .top{color:var(--orange);transform:translate(40px,-4px);transition:transform .5s cubic-bezier(.6,-0.4,.3,1.5)}
+.live-brand .bot{color:var(--aqua);transform:translate(-40px,4px);transition:transform .5s cubic-bezier(.6,-0.4,.3,1.5)}
+.live-brand .spin{transition:transform .8s var(--ease)}
+.brand:hover .live-brand .top{transform:translate(0,-3px)}
+.brand:hover .live-brand .bot{transform:translate(0,3px)}
+.brand:hover .live-brand .spin{transform:rotate(180deg)}
 .glints{position:absolute;inset:0;pointer-events:none}
 .glints i{position:absolute;height:2px;background:var(--aqua);opacity:0;animation:glint 5s ease-in-out infinite}
 @keyframes glint{0%,100%{opacity:0;transform:translateX(0)}40%{opacity:.8}70%{opacity:0;transform:translateX(30px)}}
-.hero-sub{position:absolute;z-index:3;left:var(--pad);right:var(--pad);bottom:clamp(28px,6vh,64px);color:var(--paper);display:grid;gap:16px;max-width:620px}
+.hero-sub{position:absolute;z-index:3;left:var(--pad);right:var(--pad);bottom:calc(clamp(28px,6vh,64px) + 72px);color:var(--paper);display:grid;gap:16px;max-width:620px}
 @media(min-width:1000px){
-  .hero-sub{left:auto;right:var(--pad);top:110px;bottom:auto;max-width:min(400px,30vw);color:var(--mid)}
+  .hero-sub{left:auto;right:var(--pad);top:104px;bottom:auto;gap:12px;max-width:min(440px,31vw);color:var(--mid)}
   .hero-sub .hp{color:var(--mid)}
   .hero-sub .spread{color:var(--paper)}
-  .hero-sub .btn-line{border-color:var(--mid);color:var(--mid)}
-  .hero-sub .btn-fire{background:var(--mid);color:var(--paper)}
-  .hero-sub .btn-fire:hover{box-shadow:6px 6px 0 var(--paper)}
 }
-.hs{margin:0;font:800 clamp(22px,3vw,36px)/1.05 var(--display);text-transform:uppercase;letter-spacing:-.02em}
-.spread{display:inline-block;color:var(--orange);animation:spread 6s ease-in-out infinite}
+.hs{margin:0;display:grid;justify-items:start;font:800 clamp(22px,3vw,36px)/1.05 var(--display);text-transform:uppercase;letter-spacing:-.02em}
+.spread{display:block;white-space:nowrap;color:var(--orange);animation:spread 6s ease-in-out infinite}
 @keyframes spread{0%,100%{letter-spacing:-.02em}50%{letter-spacing:.22em}}
 .hp{margin:0;color:var(--muted-d);max-width:42ch}
-.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.ctas{position:absolute;z-index:3;left:var(--pad);bottom:clamp(28px,6vh,64px);display:flex;gap:10px}
+@media(max-width:420px){.ctas .btn{padding:0 16px;font-size:12px}}
+@media(min-width:1000px){.ctas{left:auto;right:var(--pad)}}
 .scroll-cue{position:absolute;z-index:3;bottom:20px;color:var(--aqua);font:600 11px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;display:none}
 @media(min-width:1000px){.scroll-cue{display:block;left:calc(var(--pad) + 30px)}}
 
 @media(max-width:700px){
   .hw{font-size:27vw}
   .w2{margin-left:10vw}
-  .hm{width:.7em;height:.7em}
-  .w4{font-size:.8em}
-  .hero-sub{bottom:clamp(40px,10vh,90px)}
+  .w4{font-size:.86em}
+  .live-hero{top:45%;right:7vw;width:25vw}
+  .hero-sub{bottom:calc(clamp(28px,6vh,64px) + 80px)}
 }
 /* ---------- PUN / MANIFESTO ---------- */
 .pun-sec{padding:clamp(80px,14vw,200px) var(--pad);display:grid;gap:clamp(40px,6vw,80px)}
@@ -286,3 +316,8 @@ textarea{min-height:110px;resize:vertical}
   [data-cut]>.ct{transform:translateX(.035em)!important}[data-cut]>.cb{transform:translateX(-.035em)!important}
   .brick,.stairs li{transform:none!important}
 }
+
+/* Hero tear: during a waterline jerk the water-side type flashes a colour ghost */
+.hero.tear .hero-layer.b{filter:drop-shadow(-6px 0 0 var(--orange)) drop-shadow(6px 0 0 var(--aqua))}
+.hero.tear .hero-layer.a .w2{transform:translateX(calc(var(--d2,0)*1px - 24px)) skewX(-8deg)}
+@media(prefers-reduced-motion:reduce){.live-hero .top{transform:translate(40px,-6px)}.live-hero .bot{transform:translate(-40px,6px)}}

@@ -7,7 +7,7 @@
   // ---- 1. The cut: split every [data-cut] into a top and bottom half ----
   $$('[data-cut]').forEach(el => {
     const html = el.innerHTML, txt = el.textContent;
-    el.innerHTML = `<span class="sr">${txt}</span><span class="ct" aria-hidden="true">${html}</span><span class="cb" aria-hidden="true">${html}</span>`;
+    el.innerHTML = `<span class="sr">${txt}</span><span class="g1" aria-hidden="true">${html}</span><span class="g2" aria-hidden="true">${html}</span><span class="ct" aria-hidden="true">${html}</span><span class="cb" aria-hidden="true">${html}</span>`;
   });
 
   // ---- 2. Hero: clone the type layer for the water side ----
@@ -16,7 +16,6 @@
   layerB.className = 'hero-layer b';
   layerB.setAttribute('aria-hidden', 'true');
   layerB.querySelector('h1').removeAttribute('id');
-  const hm = layerB.querySelector('.hm'); hm.src = hm.dataset.alt;
   layerA.after(layerB);
 
   // Water glints
@@ -52,9 +51,16 @@
     hello.addEventListener('pointerleave', () => $$('i', hello).forEach(l => l.style.transform = ''));
   }
 
+  // ---- Glitch helpers ----
+  const glitch = el => { if (calm) return; el.classList.remove('glitch'); void el.offsetWidth; el.classList.add('glitch'); setTimeout(() => el.classList.remove('glitch'), 520); };
+  const reveal = (el, delay = 0) => setTimeout(() => {
+    el.classList.add('in');
+    if (el.matches('[data-cut]')) { setTimeout(() => glitch(el), 120); setTimeout(() => glitch(el), 900); }
+  }, delay);
+
   // ---- 5. Reveal on scroll ----
   const io = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
   }), { threshold: 0.2, rootMargin: '0px 0px -5% 0px' });
   $$('[data-cut], .bricks, .stairs, .mani').forEach(el => {
     if (el.closest('.pun') || el.closest('.menu')) return;
@@ -65,13 +71,13 @@
   const puns = $$('.pun-word');
   let pi = 0;
   const punIO = new IntersectionObserver(es => {
-    if (es[0].isIntersecting) { puns[0].classList.add('in'); punIO.disconnect(); }
+    if (es[0].isIntersecting) { reveal(puns[0]); punIO.disconnect(); }
   }, { threshold: 0.3 });
   punIO.observe($('.pun'));
   if (!calm) setInterval(() => {
     if (!puns[0].classList.contains('in') && !puns[1].classList.contains('in')) return;
     puns[pi].classList.remove('in'); pi = 1 - pi;
-    setTimeout(() => puns[pi].classList.add('in'), 500);
+    reveal(puns[pi], 500);
   }, 3200);
   else puns[1].style.display = 'none';
 
@@ -80,23 +86,27 @@
     const vis = $$('[data-cut].in').filter(el => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; });
     if (!vis.length) return;
     const el = vis[Math.floor(Math.random() * vis.length)];
-    el.classList.add('jolt'); setTimeout(() => el.classList.remove('jolt'), 220);
-  }, 2400);
+    glitch(el);
+  }, 1800);
 
   // ---- 8. Live loop: waterline, hero drift, sliding rows, depth gauge ----
   const r1 = $('.r1'), r2 = $('.r2'), local = $('.local'), depth = $('#depth');
-  let px = 0.5, py = 0.5;
+  let px = 0.5, py = 0.5, kick = 0, kx = 0;
+  if (!calm) setInterval(() => {
+    kick = (Math.random() > .5 ? 1 : -1) * (4 + Math.random() * 5); kx = (Math.random() - .5) * 60;
+    hero.classList.add('tear'); setTimeout(() => { kick = 0; kx = 0; hero.classList.remove('tear'); }, 160 + Math.random() * 120);
+  }, 4200);
   addEventListener('pointermove', e => { px = e.clientX / innerWidth; py = e.clientY / innerHeight; }, { passive: true });
   const small = () => innerWidth < 700;
   function frame(t) {
     const s = t / 1000, sy = scrollY;
     // waterline breathes and leans toward the pointer
     const baseL = small() ? 43 : 62, baseR = small() ? 35 : 42;
-    const l = baseL + Math.sin(s * 0.5) * 2.5 + (py - 0.5) * 6 - sy * 0.02;
-    const r = baseR + Math.sin(s * 0.37 + 1.3) * 2.5 + (py - 0.5) * 6 - (px - 0.5) * 6 - sy * 0.035;
+    const l = kick + baseL + Math.sin(s * 0.5) * 2.5 + (py - 0.5) * 6 - sy * 0.02;
+    const r = -kick * .6 + baseR + Math.sin(s * 0.37 + 1.3) * 2.5 + (py - 0.5) * 6 - (px - 0.5) * 6 - sy * 0.035;
     hero.style.setProperty('--l', l.toFixed(2) + '%');
     hero.style.setProperty('--r', r.toFixed(2) + '%');
-    hero.style.setProperty('--d1', (Math.sin(s * 0.4) * 14 + sy * -0.15).toFixed(1));
+    hero.style.setProperty('--d1', (Math.sin(s * 0.4) * 14 + sy * -0.15 + kx).toFixed(1));
     hero.style.setProperty('--d2', (Math.sin(s * 0.33 + 2) * -18 + sy * 0.25).toFixed(1));
     // local rows slide in opposite directions with scroll: the halves of the S
     const lr = local.getBoundingClientRect();
@@ -132,7 +142,7 @@
     document.body.style.overflow = open ? 'hidden' : '';
     $$('[data-cut]', menu).forEach((el, i) => {
       el.classList.remove('in');
-      if (open) setTimeout(() => el.classList.add('in'), 80 + i * 70);
+      if (open) reveal(el, 80 + i * 70);
     });
   };
   btn.addEventListener('click', () => setMenu(menu.hidden));
