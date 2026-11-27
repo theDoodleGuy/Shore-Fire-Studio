@@ -994,3 +994,23 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 }
 @media(max-width:999px){.half .h2 .indent,.prob .h2 .indent,.why .h2 .indent{margin-left:.5em}}
 @media(min-width:1000px){.prob .h2{font-size:clamp(38px,min(4.3vw,10vh),84px)}.prob .h2 .indent{margin-left:.35em}}
+
+/* =====================================================================
+   v0.19 WORK: each project mocked as a desktop browser with a phone over its corner.
+   Flat frames in midnight, no shadows; the screenshots themselves are untouched.
+   ===================================================================== */
+.shot{aspect-ratio:16/11;overflow:visible;margin-right:0}
+.shot>.devices{position:relative;grid-area:1/1;width:100%;height:100%}
+.dev{position:absolute;background:var(--mid);overflow:hidden;transition:transform .9s var(--ease),opacity .6s ease}
+.dev img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;border:0}
+.dev-desk{left:0;top:0;width:86%;aspect-ratio:16/10.6;border:3px solid var(--mid);border-radius:6px;display:flex;flex-direction:column}
+.dev-desk .dev-bar{flex:none;height:clamp(14px,1.6vw,22px);display:flex;align-items:center;gap:5px;padding:0 10px;background:var(--mid)}
+.dev-desk .dev-bar i{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.dev-desk .dev-bar i:first-child{background:var(--orange)}
+.dev-desk img{flex:1;min-height:0}
+.dev-phone{right:0;bottom:0;width:24%;aspect-ratio:1/2.05;border:clamp(4px,.55vw,7px) solid var(--mid);border-radius:clamp(14px,2vw,28px);transition-delay:.12s}
+.slide:not(.is-on) .dev-desk{transform:translateX(var(--off,40%));opacity:0}
+.slide:not(.is-on) .dev-phone{transform:translateX(calc(var(--off,40%) * -1));opacity:0}
+.shot>picture{display:none}
+@media(min-width:1000px){.shot{aspect-ratio:16/11;max-height:calc(var(--screen,100svh) * .6)}}
+@media(max-width:999px){.shot{aspect-ratio:16/12;max-height:none}.dev-desk{width:88%}.dev-phone{width:27%}}
