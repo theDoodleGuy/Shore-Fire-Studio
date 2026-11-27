@@ -804,3 +804,22 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
   .hero{--f:max(52px,min(calc((100vw - 2*var(--cx) - var(--col) - var(--gap)) / 4.5),
             calc((var(--hh) - 150px) / 2.62),calc((var(--hh) - 150px - var(--S)) / 1.82),270px))}
 }
+
+/* v0.14: place names drift continuously in opposite directions (plus a nudge from scroll) */
+.row{width:auto;transform:translateX(var(--sx,0));will-change:auto}
+.row .rt{display:inline-flex;white-space:nowrap;animation:drift 38s linear infinite}
+.row .rt>span{padding-right:.3em}
+.r2 .rt{animation-name:driftR;animation-duration:46s}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes driftR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+
+/* cursor: never let the system pointer show through */
+@media(pointer:fine){*,*::before,*::after{cursor:none!important}}
+/* cursor: a circle at rest that morphs into a simple pointing finger over anything clickable */
+#cur{width:28px;height:28px;mix-blend-mode:difference}
+#cur i{display:none}
+#cur .c-dot{position:absolute;inset:0;border-radius:50%;background:var(--paper);transition:transform .35s cubic-bezier(.6,-0.4,.3,1.5),opacity .25s}
+#cur .c-hand{position:absolute;width:30px;height:30px;left:.9px;top:12.75px;fill:var(--paper);transform-origin:13.1px 1.25px;transform:scale(.3) rotate(-8deg);opacity:0;transition:transform .4s cubic-bezier(.6,-0.4,.3,1.5),opacity .2s}
+#cur.hov .c-dot{transform:scale(.25);opacity:0}
+#cur.hov .c-hand{transform:scale(1) rotate(0);opacity:1}
+@media(prefers-reduced-motion:reduce){.row .rt{animation:none}}

@@ -102,6 +102,8 @@
 
   // ---- 8. Live loop: waterline, hero drift, sliding rows, depth gauge ----
   const r1 = $('.r1'), r2 = $('.r2'), local = $('.local'), depth = $('#depth');
+  // place-name rows: two identical halves so the marquee loops seamlessly
+  [r1, r2].forEach(r => { const t = r.dataset.phrase.repeat(4); r.innerHTML = `<span class="rt"><span>${t}</span><span>${t}</span></span>`; });
   let px = 0.5, py = 0.5, kick = 0, kx = 0;
   if (!calm) setInterval(() => {
     kick = (Math.random() > .5 ? 1 : -1) * (4 + Math.random() * 5); kx = (Math.random() - .5) * 60;
@@ -175,8 +177,8 @@
     const lr = local.getBoundingClientRect();
     const p = (innerHeight - lr.top) / (innerHeight + lr.height);
     if (p > -0.2 && p < 1.2) {
-      r1.style.transform = `translateX(${-p * 40}%)`;
-      r2.style.transform = `translateX(${-30 + p * 30}%)`;
+      r1.style.setProperty('--sx', (-p * 12).toFixed(2) + 'vw');
+      r2.style.setProperty('--sx', (p * 12).toFixed(2) + 'vw');
     }
     const max = document.documentElement.scrollHeight - innerHeight;
     if (depth) depth.textContent = String(Math.round(sy / max * 100)).padStart(3, '0');
