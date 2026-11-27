@@ -179,6 +179,29 @@
     msg.textContent = 'Your email app should open with everything filled in. If not, email hello@shorefirestudio.com.';
   });
 
+  // ---- FAQ: one open at a time, animated open and shut ----
+  const faqs = $$('.qs details');
+  const shut = d => {
+    const a = $('.ans', d);
+    if (calm) { d.open = false; return; }
+    d.classList.add('closing');
+    a.animate([{ height: a.offsetHeight + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)' })
+      .onfinish = () => { d.open = false; d.classList.remove('closing'); };
+  };
+  const show = d => {
+    d.open = true;
+    if (calm) return;
+    const a = $('.ans', d);
+    a.animate([{ height: '0px', opacity: 0 }, { height: a.scrollHeight + 'px', opacity: 1 }], { duration: 480, easing: 'cubic-bezier(.2,.8,.2,1)' });
+  };
+  faqs.forEach(d => $('summary', d).addEventListener('click', e => {
+    e.preventDefault();
+    if (d.classList.contains('closing')) return;
+    if (d.open) { shut(d); return; }
+    faqs.forEach(o => { if (o !== d && o.open) shut(o); });
+    show(d);
+  }));
+
   // ---- 12. Touch paging: drag a little way toward the next scene and it glides there ----
   if (matchMedia('(pointer: coarse)').matches) {
     const root = document.documentElement;
