@@ -286,7 +286,7 @@
   if (matchMedia('(pointer: coarse)').matches) {
     const root = document.documentElement;
     root.classList.add('touch-paging');
-    const scenes = $$('.scene');
+    const scenes = $$('.scene, .svc').filter(el => getComputedStyle(el).scrollSnapAlign !== 'none');
     const maxY = () => root.scrollHeight - innerHeight;
     const segs = () => {
       const m = maxY();
@@ -410,6 +410,84 @@
       const sc = form.closest('.scene'), t = Math.round(sc.getBoundingClientRect().top + scrollY);
       glide(clamp(scrollY, t, Math.min(maxY(), Math.max(t, t + sc.offsetHeight - innerHeight))));
     }, 600));
+  }
+
+  // ---- 13. Desktop paging: one wheel gesture = one scene; tall scenes scroll freely to their edge ----
+  if (!matchMedia('(pointer: coarse)').matches && !calm) {
+    const root = document.documentElement;
+    root.classList.add('js-paging');
+    const maxY = () => root.scrollHeight - innerHeight;
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+    const targets = () => $$('.scene, .svc').filter(el => getComputedStyle(el).scrollSnapAlign !== 'none');
+    const segs = () => {
+      const m = maxY();
+      const list = targets().map(el => {
+        const t = Math.round(el.getBoundingClientRect().top + scrollY);
+        return { t: Math.min(t, m), end: Math.min(m, Math.max(t, t + el.offsetHeight - innerHeight)) };
+      });
+      const last = list[list.length - 1];
+      if (m > last.end + 1) list.push({ t: m, end: m });
+      return list;
+    };
+    const segIndex = (y, list) => { let b = 0, bd = Infinity; list.forEach((g, i) => { const d = y < g.t - 1 ? g.t - y : y > g.end + 1 ? y - g.end : 0; if (d < bd) { bd = d; b = i; } }); return b; };
+    let anim = null, busyUntil = 0, lastWheel = 0, pull = 0;
+    const glide = to => {
+      if (anim) cancelAnimationFrame(anim);
+      const from = scrollY, d = to - from; if (Math.abs(d) < 1) return;
+      const dur = Math.min(900, 520 + Math.abs(d) * 0.15), st = performance.now(), ease = x => 1 - Math.pow(1 - x, 4);
+      busyUntil = st + dur;
+      const step = now => { const k = Math.min(1, (now - st) / dur); scrollTo({ top: from + d * ease(k), behavior: 'instant' }); anim = k < 1 ? requestAnimationFrame(step) : null; };
+      anim = requestAnimationFrame(step);
+    };
+    const page = dir => {
+      const list = segs(), i = segIndex(scrollY, list), g = list[i];
+      if (dir > 0) { const n = list[i + 1]; if (n) glide(n.t); }
+      else { const pv = list[i - 1]; if (pv) glide(pv.end); }
+    };
+    addEventListener('wheel', e => {
+      if (!menu.hidden || e.ctrlKey) return;                 // menu open or pinch-zoom: leave alone
+      const a = document.activeElement; if (a && a.matches('textarea')) return;
+      e.preventDefault();
+      const now = performance.now(), quiet = now - lastWheel > 220; lastWheel = now;
+      if (now < busyUntil) return;                            // mid-glide: swallow trackpad momentum
+      const dy = e.deltaMode === 1 ? e.deltaY * 32 : e.deltaY;
+      const list = segs(), i = segIndex(scrollY, list), g = list[i];
+      if (g.end > g.t + 1) {                                  // tall scene: scroll inside it first
+        const inside = clamp(scrollY + dy, g.t, g.end);
+        if (Math.abs(inside - scrollY) > 0.5) { scrollTo({ top: inside, behavior: 'instant' }); pull = 0; return; }
+      }
+      if (quiet) pull = 0;
+      pull += dy;
+      if (Math.abs(pull) > 40) { const dir = Math.sign(pull); pull = 0; page(dir); }
+    }, { passive: false });
+    addEventListener('keydown', e => {
+      if (!menu.hidden || (document.activeElement && document.activeElement.matches('input, select, textarea'))) return;
+      const down = ['PageDown', 'ArrowDown', ' '].includes(e.key) && !e.shiftKey, up = ['PageUp', 'ArrowUp'].includes(e.key) || (e.key === ' ' && e.shiftKey);
+      if (e.key === 'Home') { e.preventDefault(); glide(0); return; }
+      if (e.key === 'End') { e.preventDefault(); glide(maxY()); return; }
+      if (!down && !up) return;
+      const list = segs(), g = list[segIndex(scrollY, list)];
+      if (g.end > g.t + 1 && ((down && scrollY < g.end - 1) || (up && scrollY > g.t + 1))) return;   // native scroll inside a tall scene
+      e.preventDefault(); if (performance.now() >= busyUntil) page(down ? 1 : -1);
+    });
+    $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      const el = $(a.getAttribute('href')); if (!el) return;
+      e.preventDefault(); setTimeout(() => glide(Math.min(maxY(), Math.round(el.getBoundingClientRect().top + scrollY))), 30);
+    }));
+  }
+
+  // ---- 14. Rail: shows the current scene's number and name ----
+  {
+    const railNum = $('#railNum'), railName = $('#railName');
+    const items = $$('[data-rail]').filter(el => getComputedStyle(el).scrollSnapAlign !== 'none');
+    let cur = -1;
+    const upd = () => {
+      const mid = scrollY + innerHeight * 0.4;
+      let i = 0; items.forEach((el, k) => { if (el.getBoundingClientRect().top + scrollY <= mid) i = k; });
+      if (i === cur) return; cur = i;
+      railNum.textContent = String(i + 1).padStart(2, '0'); railName.textContent = items[i].dataset.rail;
+    };
+    addEventListener('scroll', upd, { passive: true }); upd();
   }
 
   $('#yr').textContent = new Date().getFullYear();

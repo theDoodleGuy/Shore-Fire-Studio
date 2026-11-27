@@ -751,3 +751,44 @@ html.touch-paging body{overscroll-behavior-y:none}
 .madlib input::placeholder{opacity:.55}
 /* project names must never crop on phones */
 @media(max-width:700px){.w-name{font-size:clamp(22px,7vw,40px)}}
+
+/* =====================================================================
+   v0.12 desktop: script paging, every scene fits the screen, short rail
+   ===================================================================== */
+html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
+
+/* rail: current scene number + name only, so it never runs out of room */
+@media(min-width:1000px){
+  .rail-text{display:flex;gap:14px;align-items:center;letter-spacing:.25em}
+  .rail-text b{font:900 13px/1 var(--display);letter-spacing:0;color:var(--orange)}
+  .depth{display:none}
+}
+
+@media(min-width:1000px){
+  /* headings scale with height as well as width */
+  .h2{font-size:clamp(44px,min(9.5vw,14vh),150px)}
+  .scene{padding-top:clamp(84px,11vh,120px);padding-bottom:clamp(36px,6vh,80px)}
+
+  /* How it works: the staircase runs across the screen instead of down it */
+  .stairs{grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,2.5vw,40px);margin-top:clamp(28px,5vh,64px);align-items:start}
+  .stairs li{margin-left:0;margin-top:calc(var(--i) * min(7vh,64px));max-width:none}
+  .stairs h3{font-size:clamp(24px,min(2.6vw,4.4vh),44px)}
+
+  /* FAQ: tighter rhythm */
+  .qs{margin-top:clamp(24px,4vh,56px);gap:10px}
+  .qs summary{padding:clamp(12px,2vh,20px) 22px}
+
+  /* Contact: "Say hello" beside the sentence, not above it */
+  .contact.scene{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);column-gap:clamp(32px,5vw,96px);align-content:center;align-items:center}
+  .hello{grid-column:1;grid-row:1 / span 2;font-size:clamp(64px,min(12vw,22vh),220px)}
+  .hl:nth-child(2){margin-left:.5em}.hl:nth-child(3){margin-left:1.1em}
+  .madlib{grid-column:2;grid-row:1;margin-top:0}
+  .madlib p{font-size:clamp(20px,min(2.2vw,3.6vh),34px)}
+  .send{font-size:clamp(48px,min(6vw,11vh),110px)}
+  .send-row{margin-top:clamp(16px,3vh,36px)}
+  .c-alt{grid-column:2;grid-row:2;margin-top:clamp(14px,2.5vh,30px)}
+}
+@media(min-width:1000px){
+  .hello{font-size:clamp(60px,min(9.5vw,20vh),190px);justify-self:start}
+  .hl:nth-child(2){margin-left:.3em}.hl:nth-child(3){margin-left:.75em}
+}
