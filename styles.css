@@ -720,3 +720,25 @@ html.touch-paging body{overscroll-behavior-y:none}
 .brand,.foot-mark{text-decoration:none}
 @media(min-width:1000px){.fire-half .giant{display:none}}
 @media(max-width:700px){.faq .h2{font-size:clamp(38px,10.5vw,80px)}}
+
+/* =====================================================================
+   v0.10 LOCKUP: exactly Wordmark round 2, option 4 (forward lean).
+   Proportions are taken from that artboard (word 92px: mark 140px, mark gap 36px,
+   slide 14px, cut gap 4px, skew -10deg, STUDIO 15px / tracking 14px / inset 4px / 10px below),
+   expressed relative to --wm (the word's font size). Mark is one colour, same as the word.
+   At small sizes STUDIO is held at a 9.5px minimum so it stays readable.
+   ===================================================================== */
+.lockup{--wm:28px;display:flex;align-items:center;gap:calc(var(--wm) * .391);color:inherit}
+.lockup .lk-mark{width:calc(var(--wm) * 1.522);height:auto;aspect-ratio:1;flex:none}
+.lockup .lk-mark path{fill:currentColor}
+.lockup .lk-type{display:flex;flex-direction:column;align-items:flex-start;gap:calc(var(--wm) * .109);min-width:0}
+.lockup .lk-word{display:grid;height:auto;aspect-ratio:auto;transform:skewX(-10deg);font:900 var(--wm)/1 var(--display);letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap}
+.lockup .lk-word>span{grid-area:1/1}
+.lockup .lk-word .t{clip-path:polygon(0 0,100% 0,100% 42%,0 58%);transform:translate(.152em,-.0217em)}
+.lockup .lk-word .b{clip-path:polygon(0 58%,100% 42%,100% 100%,0 100%);transform:translate(-.152em,.0217em)}
+.lockup .lk-studio{font:600 max(calc(var(--wm) * .163),9.5px)/1 var(--sans);letter-spacing:calc(var(--wm) * .152);text-transform:uppercase;padding-left:calc(var(--wm) * .043);color:inherit}
+.brand{padding:9px 18px 9px 12px;gap:0}
+.brand .lockup{--wm:26px}
+@media(max-width:420px){.brand .lockup{--wm:19px}.brand{padding:8px 12px 8px 10px}}
+.foot-mark{display:block;margin-top:44px}
+.foot-mark .lockup{--wm:clamp(36px,6.4vw,92px)}
