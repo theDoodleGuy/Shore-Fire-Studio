@@ -3,26 +3,33 @@
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---- 0. Lock scene height to the screen ----
-  // Phones shrink the viewport when the keyboard opens; if scenes followed it, every scene
-  // would resize and the page would jump. So scenes use a fixed --screen height that only
-  // updates on real changes (rotation, window resize), never while a form field is focused.
+  // Phones change the viewport height when the keyboard opens and when the address bar
+  // slides; if scenes followed every change the page would jump. So scenes use a --screen
+  // height that ignores the keyboard and small address-bar wobbles, but always resyncs on
+  // rotation, real resizes, and when the page becomes visible again (phones can report odd
+  // sizes while waking up, so we measure again once things settle).
   {
     const rootEl = document.documentElement;
     let w = innerWidth, h = innerHeight;
+    const sane = () => innerWidth > 200 && innerHeight > 300 && !document.hidden;
     const set = () => { rootEl.style.setProperty('--screen', h + 'px'); dispatchEvent(new Event('screenchange')); };
     set();
+    const typingNow = () => { const a = document.activeElement; return a && a.matches('input, select, textarea'); };
+    const check = (force) => {
+      if (!sane()) return;
+      if (innerWidth !== w) { w = innerWidth; h = innerHeight; set(); return; }   // rotation / window resize
+      if (typingNow() && !force) return;                                          // keyboard: ignore
+      const d = innerHeight - h;
+      if (force ? d !== 0 : Math.abs(d) > 120) { h = innerHeight; set(); }       // real change, not the address bar
+    };
     let rt;
-    addEventListener('resize', () => {
-      clearTimeout(rt);
-      rt = setTimeout(() => {
-        const a = document.activeElement, typingNow = a && a.matches('input, select, textarea');
-        if (innerWidth !== w) { w = innerWidth; h = innerHeight; set(); return; }   // rotation / window resize
-        if (typingNow) return;                                                      // keyboard: ignore
-        if (Math.abs(innerHeight - h) > 160 && innerHeight < h) return;             // keyboard still closing
-        if (innerHeight !== h) { h = Math.max(h, innerHeight); set(); }             // address bar settled
-      }, 250);
-    });
+    addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => check(false), 300); });
+    const resync = () => { clearTimeout(rt); rt = setTimeout(() => check(true), 450); };
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) resync(); });
+    addEventListener('pageshow', resync);
+    addEventListener('orientationchange', resync);
   }
+
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
@@ -114,6 +121,7 @@
   // buttons or the header, shrink it until it doesn't; if it's already at its smallest,
   // let the hero grow taller instead of overlapping.
   const fitHero = () => {
+    if (document.hidden || innerHeight < 300 || innerWidth < 200) return;
     const ctasEl = $('.ctas');
     hero.style.removeProperty('--f'); hero.style.removeProperty('height');
     ctasEl.style.removeProperty('top'); ctasEl.style.removeProperty('bottom');
@@ -132,7 +140,8 @@
       const w = words(), c = [R($('.hero-sub .hs')), R($('.hero-sub .hp')), R(ctasEl)], hdr = R($('.top')).bottom;
       let worst = 0;
       w.forEach(a => c.forEach(b => { if (hits(a, b)) worst = Math.max(worst, overlapY(a, b)); }));
-      if (w[0].top < hdr + 8) worst = Math.max(worst, hdr + 8 - w[0].top);
+      const below = w[0].top - R(hero).top;                      // measured within the hero, wherever we're scrolled
+      if (below < hdr + 8) worst = Math.max(worst, hdr + 8 - below);
       return worst;
     };
     placeCtas();
@@ -144,7 +153,7 @@
     // 3. last resort: let the hero grow so nothing overlaps or falls off its bottom
     const hr = R(hero), lowest = Math.max(R(ctasEl).bottom, ...words().map(r => r.bottom));
     const extra = Math.max(clash(), lowest + 28 - hr.bottom);
-    if (extra > 0) hero.style.height = (hero.offsetHeight + extra) + 'px';
+    if (extra > 0) hero.style.height = (hero.offsetHeight + Math.min(extra, innerHeight * 0.35)) + 'px';
   };
   const refit = () => { fitHero(); aimWater(); };
   refit();
