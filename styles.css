@@ -742,3 +742,12 @@ html.touch-paging body{overscroll-behavior-y:none}
 @media(max-width:420px){.brand .lockup{--wm:19px}.brand{padding:8px 12px 8px 10px}}
 .foot-mark{display:block;margin-top:44px}
 .foot-mark .lockup{--wm:clamp(36px,6.4vw,92px)}
+
+/* v0.11 style-guide pass */
+/* Type rule: never Unbounded for paragraphs. The contact sentence is body copy, so it's Instrument Sans;
+   only the typed answers stay in Unbounded as display. */
+.madlib p{font:600 clamp(22px,3.2vw,42px)/1.6 var(--sans);letter-spacing:-.01em;text-transform:none}
+.madlib input,.madlib select{font:800 1em/1.2 var(--display);letter-spacing:-.02em}
+.madlib input::placeholder{opacity:.55}
+/* project names must never crop on phones */
+@media(max-width:700px){.w-name{font-size:clamp(22px,7vw,40px)}}
