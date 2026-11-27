@@ -6,7 +6,7 @@
    TYPE    Unbounded 900 oversized and cropped; Instrument Sans quiet underneath
 */
 :root{
-  --orange:#EE6B43; --deep:#B4492A; --mid:#0A1A2F; --mid2:#13284A; --aqua:#00C2C7; --aink:#00767A;
+  --orange:#FF3D00; --deep:#C93000; --mid:#0A1A2F; --mid2:#13284A; --aqua:#00C2C7; --aink:#00767A;
   --sodium:#FFD23F; --paper:#FFF8EE; --white:#fff; --muted:#4B5A6E; --muted-d:#A9B6C8;
   --display:"Unbounded","Archivo Black",system-ui,sans-serif; --sans:"Instrument Sans",system-ui,sans-serif;
   --ease:cubic-bezier(.2,.8,.2,1); --pad:max(6vw,20px);
@@ -662,3 +662,61 @@ html.touch-paging body{overscroll-behavior-y:none}
   .rail-text,.depth{color:var(--paper)}
   .depth b{color:var(--orange)}
 }
+
+/* =====================================================================
+   v0.9: approved lockup, contrast cursor, signal orange used mindfully
+   ===================================================================== */
+/* Lockup: S mark + forward-lean wordmark + STUDIO set as live, readable text */
+.brand{height:auto;min-height:52px;padding:8px 16px 8px 12px;gap:10px;display:flex;align-items:center;background:var(--mid);color:var(--paper);border-radius:4px}
+.lk-mark{flex:none;width:34px;height:34px}
+.lk-o{fill:var(--orange)} .lk-a{fill:var(--aqua)}
+.lk-type{display:grid;gap:3px;justify-items:start}
+.lk-word{display:block;height:19px;width:auto;aspect-ratio:752/86}
+.lk-studio{font:600 10px/1 var(--sans);letter-spacing:.55em;text-transform:uppercase;color:var(--paper);padding-left:1px}
+@media(max-width:420px){.lk-mark{width:30px;height:30px}.lk-word{height:16px}.lk-studio{font-size:9px;letter-spacing:.5em}}
+.brand .wm{display:none}
+/* footer: the same lockup, big, single colour type on midnight */
+.foot-mark{display:flex;align-items:center;gap:clamp(14px,2vw,26px);max-width:none;margin-top:40px;color:var(--paper);text-decoration:none}
+.foot-mark .lk-mark{width:clamp(56px,8vw,104px);height:auto;aspect-ratio:1}
+.foot-mark .lk-type{gap:clamp(6px,1vw,12px)}
+.foot-mark .lk-word{height:clamp(30px,5vw,64px)}
+.foot-mark .lk-studio{font-size:clamp(12px,1.4vw,18px)}
+
+/* Cursor: one colour that inverts against whatever is under it; circle at rest, S over links */
+#cur{mix-blend-mode:difference}
+#cur i{background:var(--paper);box-shadow:none}
+#cur i:first-child,#cur i:last-child{background:var(--paper)}
+
+/* Signal orange, used mindfully: big fields carry display type only;
+   reading-heavy scenes move to paper or midnight */
+.fire-half{background:var(--paper);color:var(--mid)}
+.fire-half .tag{color:var(--deep)}
+.fire-half .h2 [data-cut]{--cb:var(--orange);--g1:var(--aqua)}
+.fire-half .giant{color:transparent;-webkit-text-stroke:3px var(--orange);opacity:1}
+@media(max-width:700px){.fire-half .giant{-webkit-text-stroke:2px var(--orange);opacity:.9}}
+@media(min-width:1000px){.svc{background:var(--paper)}}
+
+.faq{background:var(--paper);color:var(--mid)}
+.qs details{border-color:var(--mid)}
+@media(hover:hover){.qs details:not([open]):hover{border-color:var(--aink)}}
+.qs details[open]{border-color:var(--orange)}
+.qs p{color:var(--muted)}
+.qs details[open] summary::after{background:var(--aink)}
+
+.contact{background:var(--mid);color:var(--paper)}
+.hl:nth-child(1){color:var(--paper)}
+.hl:nth-child(2){color:var(--orange)}
+.hl:nth-child(3){color:var(--aqua)}
+.madlib input,.madlib select{color:var(--aqua);border-bottom-color:var(--muted-d)}
+.madlib input::placeholder{color:var(--paper);opacity:.4}
+.madlib input:not(:placeholder-shown){color:var(--aqua);border-color:var(--aqua)}
+.madlib input:focus,.madlib select:focus{border-color:var(--orange);box-shadow:none}
+.sel::after{background:var(--paper)}
+.send{color:var(--orange)}
+.send [data-cut]{--cb:var(--aqua);--g1:var(--sodium)}
+.c-alt{color:var(--muted-d)}
+.c-alt a{color:var(--paper)}
+.form-msg{color:var(--sodium)}
+.brand,.foot-mark{text-decoration:none}
+@media(min-width:1000px){.fire-half .giant{display:none}}
+@media(max-width:700px){.faq .h2{font-size:clamp(38px,10.5vw,80px)}}
