@@ -125,11 +125,11 @@ a:hover [data-cut].in>.cb,[data-cut].in:hover>.cb{transform:translateX(-.12em)}
 .hero-layer.b .live-hero .top{color:var(--orange)}
 .hero-layer.b .live-hero .bot{color:var(--aqua)}
 @keyframes mspin{0%{transform:rotate(0)}14%{transform:rotate(200deg)}30%,62%{transform:rotate(180deg)}78%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}
-@keyframes mtop{0%,16%{transform:translate(0,-3px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}32%,60%{transform:translate(40px,-6px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}76%,100%{transform:translate(0,-3px)}}
-@keyframes mbot{0%,16%{transform:translate(0,3px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}32%,60%{transform:translate(-40px,6px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}76%,100%{transform:translate(0,3px)}}
+@keyframes mtop{0%,16%{transform:translate(0,-3px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}32%,60%{transform:translate(20px,-6px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}76%,100%{transform:translate(0,-3px)}}
+@keyframes mbot{0%,16%{transform:translate(0,3px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}32%,60%{transform:translate(-20px,6px);animation-timing-function:cubic-bezier(.6,-0.4,.3,1.5)}76%,100%{transform:translate(0,3px)}}
 .live-brand{width:36px;height:36px}
-.live-brand .top{color:var(--orange);transform:translate(40px,-4px);transition:transform .5s cubic-bezier(.6,-0.4,.3,1.5)}
-.live-brand .bot{color:var(--aqua);transform:translate(-40px,4px);transition:transform .5s cubic-bezier(.6,-0.4,.3,1.5)}
+.live-brand .top{color:var(--orange);transform:translate(20px,-4px);transition:transform .5s cubic-bezier(.6,-0.4,.3,1.5)}
+.live-brand .bot{color:var(--aqua);transform:translate(-20px,4px);transition:transform .5s cubic-bezier(.6,-0.4,.3,1.5)}
 .live-brand .spin{transition:transform .8s var(--ease)}
 .brand:hover .live-brand .top{transform:translate(0,-3px)}
 .brand:hover .live-brand .bot{transform:translate(0,3px)}
@@ -341,7 +341,7 @@ a:hover [data-cut].in>.cb,[data-cut].in:hover>.cb{transform:translateX(-.12em)}
 /* Hero tear: during a waterline jerk the water-side type flashes a colour ghost */
 .hero.tear .hero-layer.b{filter:drop-shadow(-6px 0 0 var(--orange)) drop-shadow(6px 0 0 var(--aqua))}
 .hero.tear .hero-layer.a .w2{transform:translateX(calc(var(--d2,0)*1px - 24px)) skewX(-8deg)}
-@media(prefers-reduced-motion:reduce){.live-hero .top{transform:translate(40px,-6px)}.live-hero .bot{transform:translate(-40px,6px)}}
+@media(prefers-reduced-motion:reduce){.live-hero .top{transform:translate(20px,-6px)}.live-hero .bot{transform:translate(-20px,6px)}}
 @media(max-width:999px){.s-list{display:grid;gap:6px}.s-list li:not(:last-child)::after{content:none}.s-list li::before{content:"/";color:var(--acc);font-weight:600;margin-right:10px}}
 
 /* =====================================================================
@@ -838,7 +838,7 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 @media(hover:hover){.qs summary:hover{color:var(--deep)}}
 .qs details[open] summary{color:var(--deep)}
 .qs summary::after{flex:0 0 28px;height:28px;border-radius:0;clip-path:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-170 -170 340 340'%3E%3Cg transform='rotate(-35)'%3E%3Cpath d='M-100 0A100 100 0 0 1 100 0Z' transform='translate(0,-6)' fill='%230A1A2F'/%3E%3Cpath d='M100 0A100 100 0 0 1-100 0Z' transform='translate(0,6)' fill='%230A1A2F'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;transition:transform .45s cubic-bezier(.6,-0.4,.3,1.5)}
-.qs details[open] summary::after{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-170 -170 340 340'%3E%3Cg transform='rotate(-35)'%3E%3Cpath d='M-100 0A100 100 0 0 1 100 0Z' transform='translate(40,-4)' fill='%23FF3D00'/%3E%3Cpath d='M100 0A100 100 0 0 1-100 0Z' transform='translate(-40,4)' fill='%2300767A'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;transform:scale(1.12)}
+.qs details[open] summary::after{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-170 -170 340 340'%3E%3Cg transform='rotate(-35)'%3E%3Cpath d='M-100 0A100 100 0 0 1 100 0Z' transform='translate(20,-4)' fill='%23FF3D00'/%3E%3Cpath d='M100 0A100 100 0 0 1-100 0Z' transform='translate(-20,4)' fill='%2300767A'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;transform:scale(1.12)}
 .qs p{padding:0 0 22px;color:var(--muted);font-size:clamp(16px,1.2vw,18px)}
 @media(min-width:1000px){
   .faq.scene{grid-template-columns:minmax(0,.85fr) minmax(0,1.35fr);column-gap:clamp(40px,6vw,120px);align-items:start}
@@ -853,3 +853,6 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
   .faq .h2 .indent{margin-left:.45em}
 }
 @media(min-width:1000px){.faq .h2{align-self:end}.faq-aside{align-self:start}}
+/* mark slide halved (each half 10% of D): the S dot in the work reel follows */
+.w-dot.on::before{transform:rotate(-35deg) translateX(1.4px)}
+.w-dot.on::after{transform:rotate(-35deg) translateX(-1.4px)}
