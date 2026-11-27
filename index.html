@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Shore Fire Studio — Websites that work. AI you'll actually use.</title>
 <meta name="description" content="Web design and AI mentoring for small businesses across Waterside and Southampton. Local sites, sure results.">
+<meta name="theme-color" content="#FF3D00">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,254 +14,238 @@
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-line" viewBox="0 0 20 20"><path d="M2 14 L18 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/><path d="M2 18 L18 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" opacity=".5"/></symbol>
-</svg>
+<a class="skip" href="#main">Skip to content</a>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="lockup" href="#top" aria-label="Shore Fire Studio home">
-      <img src="assets/mark-on-dark.svg" alt="" width="40" height="40">
-      <span class="word">Shore Fire<span class="studio">Studio</span></span>
-    </a>
-    <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
-    <nav class="nav" id="nav" aria-label="Main">
-      <a href="#services">Services</a>
-      <a href="#packages">Packages</a>
-      <a href="#work">Work</a>
-      <a href="#how">How it works</a>
-      <a href="#faq">FAQ</a>
-      <a class="btn btn-fire" href="#contact">Get a quote</a>
-    </nav>
+<!-- Custom cursor: the S, which splits over anything clickable -->
+<div id="cur" aria-hidden="true"><i></i><i></i></div>
+
+<!-- Left rail: running caption + depth gauge -->
+<aside class="rail" aria-hidden="true">
+  <span class="rail-text">Shore Fire Studio — web design &amp; AI mentoring — Waterside &amp; Southampton</span>
+  <span class="depth">Depth <b id="depth">000</b></span>
+</aside>
+
+<header class="top">
+  <a class="brand" href="#top" aria-label="Shore Fire Studio, back to top"><img src="assets/mark-on-dark.svg" alt="" width="44" height="44"></a>
+  <div class="top-r">
+    <a class="chip chip-fire hide-s" href="#contact">Get a quote</a>
+    <button class="chip chip-ink" id="menuBtn" aria-expanded="false" aria-controls="menu">Menu</button>
   </div>
 </header>
 
-<main id="top">
+<!-- Full-screen menu, split on the waterline -->
+<nav id="menu" class="menu" aria-label="Main" hidden>
+  <ul>
+    <li><a href="#services"><span data-cut="block">Services</span></a></li>
+    <li><a href="#packages"><span data-cut="block">Packages</span></a></li>
+    <li><a href="#work"><span data-cut="block">Work</span></a></li>
+    <li><a href="#how"><span data-cut="block">How</span></a></li>
+    <li><a href="#contact"><span data-cut="block">Hello</span></a></li>
+  </ul>
+  <p class="menu-foot">hello@shorefirestudio.com</p>
+</nav>
 
-  <!-- HERO: orange above the waterline, midnight below -->
-  <section class="hero" aria-labelledby="hero-title" style="padding:0">
-    <img class="hero-mark" src="assets/mark-one-colour-midnight.svg" alt="">
-    <div class="wrap">
-      <div>
-        <p class="label">Web design + AI mentoring · Waterside &amp; Southampton</p>
-        <h1 class="h1" id="hero-title">
-          <span>Websites</span>
-          <span class="lean">that work.</span>
-        </h1>
-      </div>
-      <div>
-        <p class="lead" style="color:var(--paper)">AI you'll actually use. We build sites for local businesses and show you how to put AI to work, without the jargon.</p>
-        <div class="hero-foot" style="margin-top:var(--space-6)">
-          <a class="btn btn-fire" href="#contact">Get a quote</a>
-          <a class="btn btn-ghost" href="#packages">See packages</a>
-        </div>
-      </div>
-    </div>
-    <span class="hero-pin">50.86° N · Solent</span>
-  </section>
+<main id="main">
 
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>Local sites</span><i>/</i><span>Sure results</span><i>/</i><span>AI you'll actually use</span><i>/</i><span>Built on the Solent</span><i>/</i>
-      <span>Local sites</span><i>/</i><span>Sure results</span><i>/</i><span>AI you'll actually use</span><i>/</i><span>Built on the Solent</span><i>/</i>
-    </div>
+<!-- ============ HERO: the waterline moves, type changes colour as it crosses ============ -->
+<section class="hero" id="top" aria-labelledby="h1">
+  <div class="hero-water"></div>
+  <div class="glints" aria-hidden="true"></div>
+
+  <div class="hero-layer a">
+    <h1 class="hw" id="h1">
+      <span class="w w1">Web</span>
+      <span class="w w2">sites</span>
+      <span class="w w3">that</span>
+      <span class="w w4"><span>Wo</span><img class="hm" src="assets/mark-one-colour-midnight.svg" data-alt="assets/mark-one-colour-paper.svg" alt=""><span>rk.</span></span>
+    </h1>
   </div>
 
-  <!-- SERVICES -->
-  <section id="services" style="padding-bottom:0">
-    <div class="wrap section-head">
-      <h2 class="h2">Two things.<br>Done properly.</h2>
-      <p class="lead muted">A website that brings in work, and the know-how to run your business smarter with AI. Take one or both.</p>
+  <div class="hero-sub">
+    <p class="hs"><span>AI you'll</span> <span class="spread">actually</span> <span>use.</span></p>
+    <p class="hp">We build websites for local businesses and teach you to put AI to work. No jargon. No robots. No nonsense.</p>
+    <div class="ctas">
+      <a class="btn btn-fire" href="#contact">Get a quote</a>
+      <a class="btn btn-line" href="#packages">See packages</a>
     </div>
-    <div class="services">
-      <article class="service fire">
-        <p class="label">Fire · 01</p>
-        <h3 class="h3">Websites</h3>
-        <p>Fast, mobile-first sites that show off your work and get the phone ringing. Built for your trade, not pulled off a shelf.</p>
-        <ul>
-          <li><svg width="20" height="20"><use href="#i-line"/></svg>Designed around your customers and your area</li>
-          <li><svg width="20" height="20"><use href="#i-line"/></svg>Update your own photos and jobs from your phone</li>
-          <li><svg width="20" height="20"><use href="#i-line"/></svg>Found on Google for the places you work</li>
-          <li><svg width="20" height="20"><use href="#i-line"/></svg>Hosting, domain and care sorted for you</li>
-        </ul>
-        <a class="btn btn-midnight" href="#packages">Website packages</a>
-      </article>
-      <article class="service water">
-        <p class="label">Water · 02</p>
-        <h3 class="h3">AI mentoring</h3>
-        <p>One-to-one sessions that show you where AI saves you time this week. Quotes, emails, social posts, admin. Plain English, real tasks.</p>
-        <ul>
-          <li><svg width="20" height="20" style="color:var(--electric-aqua)"><use href="#i-line"/></svg>Sessions built around your actual jobs</li>
-          <li><svg width="20" height="20" style="color:var(--electric-aqua)"><use href="#i-line"/></svg>Set up the tools, then learn to use them</li>
-          <li><svg width="20" height="20" style="color:var(--electric-aqua)"><use href="#i-line"/></svg>Honest advice on what's worth it and what isn't</li>
-          <li><svg width="20" height="20" style="color:var(--electric-aqua)"><use href="#i-line"/></svg>In person locally, or over a video call</li>
-        </ul>
-        <a class="btn btn-fire" href="#packages">Mentoring options</a>
-      </article>
-    </div>
-  </section>
+  </div>
+  <span class="scroll-cue" aria-hidden="true">Scroll ↓ below the line</span>
+</section>
 
-  <!-- PACKAGES (the storefront) -->
-  <section id="packages">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 class="h2">Pick your<br>starting point.</h2>
-        <p class="lead muted">Clear packages, fixed prices, no surprises. Not sure which fits? Ask and we'll tell you straight.</p>
-      </div>
-      <div class="packages">
-        <article class="pkg">
-          <p class="label" style="margin:0;color:var(--aqua-ink)">Website</p>
-          <h3 class="h3">Launch</h3>
-          <p class="price">£TBC<small>one-off</small></p>
-          <p class="muted">A sharp one-page site to get you online and looking the part.</p>
-          <ul>
-            <li>Single scrolling page</li>
-            <li>Contact form and click-to-call</li>
-            <li>Google Business Profile set-up</li>
-            <li>Live in two weeks</li>
-          </ul>
-          <a class="btn btn-ghost" href="#contact" data-package="Launch">Choose Launch</a>
-        </article>
-        <article class="pkg hot">
-          <span class="flag">Most popular</span>
-          <p class="label" style="margin:0;color:var(--electric-aqua)">Website</p>
-          <h3 class="h3">Showcase</h3>
-          <p class="price">£TBC<small>one-off</small></p>
-          <p class="muted">For trades and makers who sell on their work. Upload new jobs yourself.</p>
-          <ul>
-            <li>Up to five pages</li>
-            <li>Project gallery you update from your phone</li>
-            <li>Local search basics for your towns</li>
-            <li>One AI mentoring session included</li>
-          </ul>
-          <a class="btn btn-fire" href="#contact" data-package="Showcase">Choose Showcase</a>
-        </article>
-        <article class="pkg">
-          <p class="label" style="margin:0;color:var(--signal-deep)">Mentoring</p>
-          <h3 class="h3">AI Kickstart</h3>
-          <p class="price">£TBC<small>per block</small></p>
-          <p class="muted">Three sessions to get AI doing real work in your business.</p>
-          <ul>
-            <li>Find your three biggest time-sinks</li>
-            <li>Set up the right tools</li>
-            <li>Templates you keep and reuse</li>
-            <li>Follow-up check-in a month later</li>
-          </ul>
-          <a class="btn btn-ghost" href="#contact" data-package="AI Kickstart">Choose Kickstart</a>
-        </article>
-      </div>
-      <p class="note muted">Ongoing hosting and care plans are available for every site. Ask for details.</p>
-    </div>
-  </section>
+<!-- ============ PUN / MANIFESTO ============ -->
+<section class="pun-sec" aria-labelledby="pun-h">
+  <h2 class="pun" id="pun-h" aria-label="Surefire. Shore Fire.">
+    <span class="pun-word on" data-cut="block">Sure fire</span>
+    <span class="pun-word" data-cut="block">Shore fire</span>
+  </h2>
+  <div class="def">
+    <p class="phon">/ʃɔː ˈfaɪə/ &nbsp;adj.</p>
+    <p><b>1.</b> Guaranteed to work.</p>
+    <p><b>2.</b> Made on the Solent, where the water meets the light.</p>
+  </div>
 
-  <!-- WORK -->
-  <section id="work" class="work">
-    <div class="wrap">
-      <div class="case">
-        <div class="case-visual" role="img" aria-label="Placeholder for builder project screenshots">
-          <div class="tile t1"></div><div class="tile t2"></div><div class="tile t3"></div><div class="tile t4"></div>
-          <div class="cap">Project photos here</div>
-        </div>
-        <div>
-          <p class="label">Work · In progress</p>
-          <h2 class="h2">First up:<br>a local builder.</h2>
-          <p class="lead muted" style="margin-top:var(--space-6)">A site where every finished job goes up the same day, straight from the van. More of the work, less of the waffle.</p>
-          <p style="margin-top:var(--space-6)"><a class="btn btn-ghost" href="#contact">Want one like it?</a></p>
-        </div>
-      </div>
-      <div class="slots">
-        <div class="slot"><p class="label" style="margin:0">Next project</p><p class="muted" style="margin:0">Could be yours.</p></div>
-        <div class="slot"><p class="label" style="margin:0">Next project</p><p class="muted" style="margin:0">Waterside, Southampton, or along the coast.</p></div>
-        <div class="slot"><p class="label" style="margin:0">Next project</p><p class="muted" style="margin:0">Any trade, any size.</p></div>
-      </div>
-    </div>
-  </section>
+  <div class="mani">
+    <p class="m1">We don't do tem—</p>
+    <p class="m2">plates.</p>
+    <p class="m3">We don't say
+      <s>leverage</s> <s>solutions</s> <s>cutting-edge</s> <s>unlock</s>.
+    </p>
+    <p class="m4">We say: <em data-cut>it works.</em></p>
+  </div>
+</section>
 
-  <!-- HOW IT WORKS -->
-  <section id="how">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 class="h2">How it works.</h2>
-        <p class="lead muted">Four steps, no drawn-out meetings. You'll always know what's next.</p>
-      </div>
-      <ol class="steps">
-        <li><h3 class="h3">Chat</h3><p>A brew and a natter, in person or on a call. What you do, who you do it for, what's not working.</p></li>
-        <li><h3 class="h3">Plan</h3><p>A short, plain-English plan with a fixed price. No hidden extras.</p></li>
-        <li><h3 class="h3">Build</h3><p>We design and build, using AI to move fast. You see progress as we go.</p></li>
-        <li><h3 class="h3">Launch</h3><p>Go live, learn to update it yourself, and know who to call when you need a hand.</p></li>
-      </ol>
-    </div>
-  </section>
+<!-- ============ SERVICES: two halves, slid apart like the S ============ -->
+<section id="services" class="svc" aria-label="Services">
+  <article class="half fire-half">
+    <span class="giant" aria-hidden="true">FIRE</span>
+    <p class="tag">The site</p>
+    <h2 class="h2"><span data-cut="block">Web</span><span data-cut="block" class="indent">sites</span></h2>
+    <p class="big">Fast, bold, mobile-first. Built to show off your work and get the phone ringing.</p>
+    <ul class="ticks">
+      <li>Designed around your customers and your patch</li>
+      <li>Post new jobs and photos from your phone</li>
+      <li>Found on Google where you actually work</li>
+      <li>Hosting, domain and care sorted</li>
+    </ul>
+  </article>
+  <article class="half water-half">
+    <span class="giant" aria-hidden="true">WATER</span>
+    <p class="tag">The brains</p>
+    <h2 class="h2"><span data-cut="block">AI men</span><span data-cut="block" class="indent">toring</span></h2>
+    <p class="big">One-to-one sessions that find where AI saves you hours <i class="this">this week</i>.</p>
+    <ul class="ticks">
+      <li>Quotes, emails, socials, admin: real tasks</li>
+      <li>We set the tools up, then you learn them</li>
+      <li>Honest about what's worth it and what isn't</li>
+      <li>In person locally, or on a video call</li>
+    </ul>
+  </article>
+</section>
 
-  <!-- LOCAL -->
-  <section class="local" aria-labelledby="local-title">
-    <div class="wrap">
-      <p class="label">Proper local</p>
-      <h2 id="local-title" class="big">Waterside</h2>
-      <p class="big offset" aria-hidden="true">&amp; Soton</p>
-      <p class="lead" style="margin-top:var(--space-10)">Based on the Solent and working with businesses up and down the coast. Happy to meet you on site, in the workshop, or down the café.</p>
-      <div class="places">
-        <span>Hythe</span><span>Dibden Purlieu</span><span>Marchwood</span><span>Totton</span><span>Fawley</span><span>Holbury</span><span>Southampton</span><span>New Forest</span>
-      </div>
-    </div>
-  </section>
+<!-- ============ PACKAGES: tilted tickets across a hard orange band ============ -->
+<section id="packages" class="pk" aria-labelledby="pk-h">
+  <div class="pk-band" aria-hidden="true"></div>
+  <h2 class="h2 pk-h" id="pk-h">
+    <span data-cut="block">Pick</span>
+    <span data-cut="block" class="indent">one.</span>
+    <span class="aside">(or two, we won't judge)</span>
+  </h2>
 
-  <!-- FAQ -->
-  <section id="faq">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 class="h2">Fair questions.</h2>
-        <p class="lead muted">If yours isn't here, just ask.</p>
-      </div>
-      <div class="faq">
-        <details><summary>Do I need to be good with tech?</summary><p>No. If you can send a photo on WhatsApp, you can update your site. We'll show you how and stick around after launch.</p></details>
-        <details><summary>How long does a site take?</summary><p>Most sites go live in two to four weeks, depending on how quickly we get your photos and words together.</p></details>
-        <details><summary>Will the AI write my whole website?</summary><p>No. AI helps us work faster, but every site is planned, designed and checked by a person who knows your area and your trade.</p></details>
-        <details><summary>What does AI mentoring actually cover?</summary><p>Whatever eats your time. Common ones are quotes, emails, social posts, job write-ups and admin. We pick real tasks and get them done together.</p></details>
-        <details><summary>Do I own my website?</summary><p>Yes. Your domain, your content, your site. If you ever move on, you take it with you.</p></details>
-      </div>
-    </div>
-  </section>
+  <div class="tickets">
+    <article class="ticket" style="--rot:-4deg">
+      <p class="t-kind">Website</p>
+      <h3>Launch</h3>
+      <p class="t-price">£TBC <small>one-off</small></p>
+      <p>A sharp one-pager to get you online and looking the part.</p>
+      <ul><li>Single scrolling page</li><li>Contact form + click-to-call</li><li>Google Business Profile set-up</li><li>Live in two weeks</li></ul>
+      <a class="btn btn-ink" href="#contact" data-package="Launch">Choose Launch</a>
+    </article>
+    <article class="ticket hot" style="--rot:2.5deg">
+      <span class="stamp">Most<br>popular</span>
+      <p class="t-kind">Website</p>
+      <h3>Show&shy;case</h3>
+      <p class="t-price">£TBC <small>one-off</small></p>
+      <p>For trades and makers who sell on their work. Upload new jobs yourself.</p>
+      <ul><li>Up to five pages</li><li>Project gallery, updated from your phone</li><li>Local search basics for your towns</li><li>One AI mentoring session included</li></ul>
+      <a class="btn btn-fire" href="#contact" data-package="Showcase">Choose Showcase</a>
+    </article>
+    <article class="ticket" style="--rot:-1.5deg">
+      <p class="t-kind">Mentoring</p>
+      <h3>AI Kick&shy;start</h3>
+      <p class="t-price">£TBC <small>3 sessions</small></p>
+      <p>Get AI doing real work in your business, not just answering riddles.</p>
+      <ul><li>Find your three biggest time-sinks</li><li>Set up the right tools</li><li>Templates you keep and reuse</li><li>Check-in a month later</li></ul>
+      <a class="btn btn-ink" href="#contact" data-package="AI Kickstart">Choose Kickstart</a>
+    </article>
+  </div>
+  <p class="pk-note">Hosting and care plans available for every site. Prices coming soon. Ask and we'll tell you straight.</p>
+</section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="contact" style="padding-bottom:var(--space-16)">
-    <div class="wrap">
-      <div class="contact-grid">
-        <div>
-          <p class="label">Get a quote</p>
-          <h2 class="h2">Let's get<br>you sorted.</h2>
-          <p class="lead" style="margin-top:var(--space-6);color:var(--ink-muted-dark)">Tell us a bit about your business. We'll come back within one working day with honest advice and a price.</p>
-          <p class="contact-direct" style="margin-top:var(--space-6)">Or email <a href="mailto:hello@shorefirestudio.com">hello@shorefirestudio.com</a></p>
-        </div>
-        <form id="quote" novalidate>
-          <label class="f">Your name<input name="name" autocomplete="name" required></label>
-          <label class="f">Business<input name="business" autocomplete="organization"></label>
-          <label class="f">Email or phone<input name="contact" required></label>
-          <label class="f">I'm interested in
-            <select name="package" id="package">
-              <option>Not sure yet</option>
-              <option>Launch</option>
-              <option>Showcase</option>
-              <option>AI Kickstart</option>
-              <option>Website + AI mentoring</option>
-            </select>
-          </label>
-          <label class="f">Anything else?<textarea name="message" placeholder="What you do, where you work, what's not working."></textarea></label>
-          <button class="btn btn-fire" type="submit">Send it</button>
-          <p class="form-msg" role="status" aria-live="polite"></p>
-        </form>
-      </div>
+<!-- ============ WORK: letters laid like bricks ============ -->
+<section id="work" class="work" aria-labelledby="work-h">
+  <h2 class="sr" id="work-h">Building a builder's site</h2>
+  <div class="bricks" data-bricks="BUILD|ING A|BUILD|ER'S|SITE" aria-hidden="true"></div>
+  <div class="work-copy">
+    <p class="tag">Work · on site now</p>
+    <p class="big">First project: a local builder. Every finished job goes up the same day, straight from the van. More of the work, less of the waffle.</p>
+    <a class="btn btn-fire" href="#contact">Want one like it?</a>
+    <div class="next">
+      <span>Next project:</span>
+      <span class="blink">yours?</span>
     </div>
-  </section>
+  </div>
+</section>
+
+<!-- ============ PROCESS: a staircase down the cut ============ -->
+<section id="how" class="how" aria-labelledby="how-h">
+  <h2 class="h2" id="how-h"><span data-cut="block">How it</span><span data-cut="block" class="indent">works.</span></h2>
+  <ol class="stairs">
+    <li style="--i:0"><span class="st">First,</span><h3>a chat.</h3><p>A brew and a natter, on site or on a call. What you do, who for, and what's not working.</p></li>
+    <li style="--i:1"><span class="st">Then,</span><h3>a plan.</h3><p>Short, plain English, fixed price. No hidden extras lurking at the bottom.</p></li>
+    <li style="--i:2"><span class="st">Next,</span><h3>the build.</h3><p>We design and build fast, with AI doing the heavy lifting and a human doing the thinking.</p></li>
+    <li style="--i:3"><span class="st">Finally,</span><h3>launch.</h3><p>Go live, learn to run it yourself, and keep a number to call when you need a hand.</p></li>
+  </ol>
+</section>
+
+<!-- ============ LOCAL: two rows sliding in opposite directions ============ -->
+<section class="local" aria-labelledby="local-h">
+  <h2 class="sr" id="local-h">Proper local: Waterside and Southampton</h2>
+  <div class="row r1" aria-hidden="true">Waterside · Southampton · Waterside · Southampton · Waterside ·</div>
+  <div class="row r2" aria-hidden="true">Hythe · Marchwood · Totton · Fawley · Dibden · Holbury · Hythe · Marchwood ·</div>
+  <div class="local-copy">
+    <p class="tag">Proper local</p>
+    <p class="big">Based on the Solent and working up and down the coast. We'll meet you on site, in the workshop, or down the café.</p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="faq" aria-labelledby="faq-h">
+  <h2 class="h2" id="faq-h"><span data-cut="block">Fair</span><span data-cut="block" class="indent">questions.</span></h2>
+  <div class="qs">
+    <details><summary>Do I need to be good with tech?</summary><p>No. If you can send a photo on WhatsApp, you can update your site. We'll show you how and stick around after launch.</p></details>
+    <details><summary>How long does a site take?</summary><p>Most go live in two to four weeks, depending on how quickly we get your photos and words together.</p></details>
+    <details><summary>Will AI write my whole website?</summary><p>No. AI helps us work faster, but every site is planned, designed and checked by a person who knows your area and your trade.</p></details>
+    <details><summary>What does AI mentoring cover?</summary><p>Whatever eats your time. Usually quotes, emails, social posts, job write-ups and admin. We pick real tasks and get them done together.</p></details>
+    <details><summary>Do I own my website?</summary><p>Yes. Your domain, your content, your site. If you ever move on, it goes with you.</p></details>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="contact" aria-labelledby="contact-h">
+  <h2 class="hello" id="contact-h" aria-label="Say hello">
+    <span class="hl" data-scatter>Say</span>
+    <span class="hl" data-scatter>hel—</span>
+    <span class="hl" data-scatter>lo.</span>
+  </h2>
+  <div class="contact-grid">
+    <div class="c-copy">
+      <p class="big">Tell us a bit about your business. We'll come back within one working day with honest advice and a price.</p>
+      <p>Or email <a href="mailto:hello@shorefirestudio.com">hello@shorefirestudio.com</a></p>
+    </div>
+    <form id="quote" novalidate>
+      <label>Your name<input name="name" autocomplete="name" required></label>
+      <label>Business<input name="business" autocomplete="organization"></label>
+      <label>Email or phone<input name="contact" required></label>
+      <label>I'm interested in
+        <select name="package" id="package">
+          <option>Not sure yet</option><option>Launch</option><option>Showcase</option><option>AI Kickstart</option><option>Website + AI mentoring</option>
+        </select>
+      </label>
+      <label>Anything else?<textarea name="message" placeholder="What you do, where you work, what's not working."></textarea></label>
+      <button class="btn btn-fire" type="submit">Send it</button>
+      <p class="form-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
 
 </main>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <a class="lockup" href="#top"><img src="assets/mark-on-dark.svg" alt="" width="32" height="32"><span class="word">Shore Fire<span class="studio">Studio</span></span></a>
-    <p style="margin:0">Web design &amp; AI mentoring on the Solent · © <span id="yr">2026</span> Shore Fire Studio</p>
-    <p style="margin:0"><a href="https://www.instagram.com/shorefirestudio">Instagram</a> · <a href="https://www.facebook.com/shorefirestudio">Facebook</a></p>
+<footer class="foot">
+  <div class="foot-row">
+    <p>Web design &amp; AI mentoring on the Solent · © <span id="yr">2026</span></p>
+    <p><a href="https://www.instagram.com/shorefirestudio">Instagram</a> · <a href="https://www.facebook.com/shorefirestudio">Facebook</a></p>
   </div>
+  <p class="foot-word" aria-hidden="true"><span data-cut="block" class="drift">Shore fire</span></p>
 </footer>
 
 <script src="main.js"></script>

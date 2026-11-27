@@ -2,7 +2,7 @@
 
 Storefront site for Shore Fire Studio: web design and AI mentoring for small businesses across Waterside and Southampton.
 
-**Status:** first draft (v0.1). Static HTML/CSS/JS, no build step. Open `index.html` in a browser.
+**Status:** v0.2 "The living waterline". Static HTML/CSS/JS, no build step. Open `index.html` in a browser.
 
 ## Structure
 - `index.html` — single page: hero, services, packages, work, how it works, local area, FAQ, contact
