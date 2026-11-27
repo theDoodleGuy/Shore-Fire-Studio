@@ -942,3 +942,55 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
   .b-list li::before{content:"/";color:var(--blk);font-weight:600;margin-right:8px}
 }
 @media(min-width:1000px){.band{grid-template-columns:minmax(0,.95fr) minmax(0,1.25fr) clamp(190px,16vw,250px)}}
+
+/* =====================================================================
+   v0.18 PROBLEM → FIX → WHY US
+   ===================================================================== */
+/* The problem (paper) */
+.prob{background:var(--paper);color:var(--mid);padding-left:var(--pad);padding-right:var(--pad)}
+.prob .tag{color:var(--deep)}
+.prob .h2 [data-cut]{--cb:var(--orange)}
+.prob-sub{margin:14px 0 0;font:800 clamp(20px,2.4vw,32px)/1.1 var(--display);text-transform:uppercase;letter-spacing:-.02em;color:var(--muted)}
+.pains{list-style:none;margin:clamp(24px,4vh,48px) 0 0;padding:0;display:grid;gap:clamp(18px,3vh,32px) clamp(24px,3vw,48px)}
+.pains li{border-top:4px solid var(--orange);padding-top:14px}
+.pains li:nth-child(even){border-color:var(--mid)}
+.pains h3{margin:0 0 8px;font:800 clamp(18px,1.7vw,26px)/1.1 var(--display);text-transform:uppercase;letter-spacing:-.02em}
+.pains p{margin:0;color:var(--muted);font-size:clamp(15px,1.15vw,18px);line-height:1.45;max-width:40ch}
+@media(min-width:1000px){
+  .prob.scene{grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);column-gap:clamp(40px,6vw,110px);align-items:center}
+  .prob .h2{font-size:clamp(44px,min(6.6vw,12vh),120px)}
+  .pains{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0}
+}
+
+/* The fix: websites on midnight, AI on paper */
+.fire-half{background:var(--mid);color:var(--paper)}
+.fire-half .tag{color:var(--orange)}
+.fire-half .h2 [data-cut]{--cb:var(--orange);--g1:var(--aqua)}
+.fire-half .giant{-webkit-text-stroke-color:var(--orange)}
+.water-half{background:var(--paper);color:var(--mid)}
+.water-half .tag{color:var(--aink)}
+.water-half .h2 [data-cut]{--cb:var(--aink)}
+.water-half .giant{display:none}
+@media(min-width:1000px){.svc{background:var(--mid)}.fire-half,.water-half{align-content:center}.half .h2{font-size:clamp(44px,min(6vw,11vh),110px)}}
+
+/* Why us (orange: short display lines, midnight body passes 4.9:1) */
+.why{background:var(--orange);color:var(--mid);padding-left:var(--pad);padding-right:var(--pad)}
+.why .h2 [data-cut]{--cb:var(--paper);--g1:var(--aqua)}
+.reasons{list-style:none;margin:clamp(24px,4vh,48px) 0 0;padding:0;display:grid;gap:clamp(20px,3vh,36px) clamp(24px,3vw,56px)}
+.reasons li{border-top:4px solid var(--mid);padding-top:14px}
+.reasons h3{margin:0 0 8px;font:900 clamp(22px,2.3vw,38px)/1 var(--display);text-transform:uppercase;letter-spacing:-.03em}
+.reasons p{margin:0;font-size:clamp(15px,1.15vw,18px);line-height:1.45;max-width:36ch}
+@media(min-width:1000px){
+  .why.scene{grid-template-columns:minmax(0,.7fr) minmax(0,1.5fr);column-gap:clamp(40px,6vw,110px);align-items:center}
+  .why .h2{font-size:clamp(48px,min(9vw,16vh),160px)}
+  .reasons{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0}
+}
+@media(min-width:1000px){
+  .prob .h2{font-size:clamp(40px,min(5vw,11vh),96px)}
+  .half .h2{font-size:clamp(40px,min(4.6vw,10vh),96px)}
+  .half .h2 .indent{margin-left:.5em}
+  .why .h2{font-size:clamp(48px,min(7vw,15vh),130px)}
+  .why .h2 .indent{margin-left:.5em}
+}
+@media(max-width:999px){.half .h2 .indent,.prob .h2 .indent,.why .h2 .indent{margin-left:.5em}}
+@media(min-width:1000px){.prob .h2{font-size:clamp(38px,min(4.3vw,10vh),84px)}.prob .h2 .indent{margin-left:.35em}}

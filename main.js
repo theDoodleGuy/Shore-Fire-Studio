@@ -78,20 +78,6 @@
     io.observe(el);
   });
 
-  // ---- 6. Sure fire / Shore fire: the pun keeps swapping ----
-  const puns = $$('.pun-word');
-  let pi = 0;
-  const punIO = new IntersectionObserver(es => {
-    if (es[0].isIntersecting) { reveal(puns[0]); punIO.disconnect(); }
-  }, { threshold: 0.3 });
-  punIO.observe($('.pun'));
-  if (!calm) setInterval(() => {
-    if (!puns[0].classList.contains('in') && !puns[1].classList.contains('in')) return;
-    puns[pi].classList.remove('in'); pi = 1 - pi;
-    reveal(puns[pi], 500);
-  }, 3200);
-  else puns[1].style.display = 'none';
-
   // ---- 7. Jolts: now and then a visible headline shudders along its cut ----
   if (!calm) setInterval(() => {
     const vis = $$('[data-cut].in').filter(el => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; });
