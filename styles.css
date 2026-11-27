@@ -235,8 +235,6 @@ a:hover [data-cut].in>.cb,[data-cut].in:hover>.cb{transform:translateX(-.12em)}
 .s1 .s-go{color:var(--aqua)}
 @media(min-width:1000px){
   .s-bot{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) auto;align-items:end;column-gap:48px}
-  .s2 .s-bot{grid-template-columns:auto minmax(0,1.3fr) minmax(0,1fr)}
-  .s2 .s-go{order:-1}.s2 .s-desc{order:1;justify-self:end;text-align:right}
 }
 .pk-tail{padding:clamp(40px,5vw,70px) var(--pad)}
 .pk-note{margin:0;max-width:46ch;font:800 clamp(18px,2vw,24px)/1.25 var(--display);text-transform:uppercase;letter-spacing:-.02em}
