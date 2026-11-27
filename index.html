@@ -19,12 +19,6 @@
 <!-- Custom cursor: the S, which splits over anything clickable -->
 <div id="cur" aria-hidden="true"><i></i><i></i></div>
 
-<!-- Left rail: running caption + depth gauge -->
-<aside class="rail" aria-hidden="true">
-  <span class="rail-text"><b id="railNum">01</b><span id="railName">Websites that work</span></span>
-  <span class="depth">Depth <b id="depth">000</b></span>
-</aside>
-
 <header class="top">
   <a class="brand" href="#top" aria-label="Shore Fire Studio, back to top"><span class="lockup" aria-hidden="true"><svg class="lk-mark" viewBox="-170 -170 340 340"><g transform="rotate(-35)"><path d="M -100 0 A 100 100 0 0 1 100 0 Z" transform="translate(40,-6)"/><path d="M 100 0 A 100 100 0 0 1 -100 0 Z" transform="translate(-40,6)"/></g></svg><span class="lk-type"><span class="lk-word"><span class="t">Shore Fire</span><span class="b">Shore Fire</span></span><span class="lk-studio">Studio</span></span></span></a>
   <div class="top-r">
@@ -48,7 +42,7 @@
 <main id="main">
 
 <!-- ============ HERO: the waterline moves, type changes colour as it crosses ============ -->
-<section class="hero scene" data-rail="Websites that work" id="top" aria-labelledby="h1">
+<section class="hero scene" id="top" aria-labelledby="h1">
   <div class="hero-water"></div>
   <div class="glints" aria-hidden="true"></div>
 
@@ -72,7 +66,7 @@
 </section>
 
 <!-- ============ PUN / MANIFESTO ============ -->
-<section class="pun-sec scene" data-rail="Sure fire" aria-labelledby="pun-h">
+<section class="pun-sec scene" aria-labelledby="pun-h">
   <h2 class="pun" id="pun-h" aria-label="Surefire. Shore Fire.">
     <span class="pun-word on" data-cut="block">Sure fire</span>
     <span class="pun-word" data-cut="block">Shore fire</span>
@@ -85,7 +79,7 @@
 
 </section>
 
-<section class="mani-sec scene" data-rail="How we talk" aria-label="How we talk">
+<section class="mani-sec scene" aria-label="How we talk">
   <div class="mani">
     <p class="m1">We don't do tem—</p>
     <p class="m2">plates.</p>
@@ -97,8 +91,8 @@
 </section>
 
 <!-- ============ SERVICES: two halves, slid apart like the S ============ -->
-<section id="services" class="svc" data-rail="Services" aria-label="Services">
-  <article class="half fire-half scene" data-rail="Websites">
+<section id="services" class="svc" aria-label="Services">
+  <article class="half fire-half scene">
     <span class="giant" aria-hidden="true">FIRE</span>
     <p class="tag">The site</p>
     <h2 class="h2"><span data-cut="block">Web</span><span data-cut="block" class="indent">sites</span></h2>
@@ -110,7 +104,7 @@
       <li>Hosting, domain and care sorted</li>
     </ul>
   </article>
-  <article class="half water-half scene" data-rail="AI mentoring">
+  <article class="half water-half scene">
     <span class="giant" aria-hidden="true">WATER</span>
     <p class="tag">The brains</p>
     <h2 class="h2"><span data-cut="block">AI men</span><span data-cut="block" class="indent">toring</span></h2>
@@ -125,7 +119,7 @@
 </section>
 
 <!-- ============ PACKAGES: tilted tickets across a hard orange band ============ -->
-<section id="packages" class="pk scene" data-rail="Packages" aria-labelledby="pk-h">
+<section id="packages" class="pk scene" aria-labelledby="pk-h">
   <h2 class="h2 pk-h" id="pk-h">
     <span data-cut="block">Pick</span>
     <span data-cut="block" class="indent">one.</span>
@@ -138,7 +132,7 @@
 
 <!-- Packages as strata: each band is cut on the waterline, the name crosses it -->
 <div class="strata">
-  <article class="stratum scene s1" data-rail="Launch">
+  <article class="stratum scene s1">
     <div class="s-top"><p class="s-kind">Website · 01</p><p class="s-price">£TBC <small>one-off</small></p></div>
     <h3 class="s-name"><span data-cut="block">Launch</span></h3>
     <div class="s-bot">
@@ -147,7 +141,7 @@
       <a class="s-go" href="#contact" data-package="Launch">Choose Launch <span aria-hidden="true">→</span></a>
     </div>
   </article>
-  <article class="stratum scene s2" data-rail="Showcase">
+  <article class="stratum scene s2">
     <div class="s-top"><p class="s-kind">Website · 02 <b class="s-flag">Most picked</b></p><p class="s-price">£TBC <small>one-off</small></p></div>
     <h3 class="s-name"><span data-cut="block">Showcase</span></h3>
     <div class="s-bot">
@@ -156,7 +150,7 @@
       <a class="s-go" href="#contact" data-package="Showcase">Choose Showcase <span aria-hidden="true">→</span></a>
     </div>
   </article>
-  <article class="stratum scene s3" data-rail="AI Kickstart">
+  <article class="stratum scene s3">
     <div class="s-top"><p class="s-kind">Mentoring · 03</p><p class="s-price">£TBC <small>3 sessions</small></p></div>
     <h3 class="s-name"><span data-cut="block">Kickstart</span></h3>
     <div class="s-bot">
@@ -169,7 +163,7 @@
 
 
 <!-- ============ WORK: a reel of cut screenshots ============ -->
-<section id="work" class="work scene" data-rail="Work" aria-labelledby="work-h">
+<section id="work" class="work scene" aria-labelledby="work-h">
   <div class="w-head">
     <h2 class="tag" id="work-h">Work · made on the Solent</h2>
     <p class="w-count" aria-hidden="true"><b id="wNow">01</b><span>/05</span></p>
@@ -231,7 +225,7 @@
 </section>
 
 <!-- ============ PROCESS: a staircase down the cut ============ -->
-<section id="how" class="how scene" data-rail="How it works" aria-labelledby="how-h">
+<section id="how" class="how scene" aria-labelledby="how-h">
   <h2 class="h2" id="how-h"><span data-cut="block">How it</span><span data-cut="block" class="indent">works.</span></h2>
   <ol class="stairs">
     <li style="--i:0"><span class="st">First,</span><h3>a chat.</h3><p>A brew and a natter, on site or on a call. What you do, who for, and what's not working.</p></li>
@@ -242,7 +236,7 @@
 </section>
 
 <!-- ============ LOCAL: two rows sliding in opposite directions ============ -->
-<section class="local scene" data-rail="Proper local" aria-labelledby="local-h">
+<section class="local scene" aria-labelledby="local-h">
   <h2 class="sr" id="local-h">Proper local: Waterside and Southampton</h2>
   <div class="row r1" aria-hidden="true">Waterside · Southampton · Waterside · Southampton · Waterside ·</div>
   <div class="row r2" aria-hidden="true">Hythe · Marchwood · Totton · Fawley · Dibden · Holbury · Hythe · Marchwood ·</div>
@@ -253,7 +247,7 @@
 </section>
 
 <!-- ============ FAQ ============ -->
-<section id="faq" class="faq scene" data-rail="Fair questions" aria-labelledby="faq-h">
+<section id="faq" class="faq scene" aria-labelledby="faq-h">
   <h2 class="h2" id="faq-h"><span data-cut="block">Fair</span><span data-cut="block" class="indent">questions.</span></h2>
   <div class="qs">
     <details><summary>Do I need to be good with tech?</summary><div class="ans"><p>No. If you can send a photo on WhatsApp, you can update your site. We'll show you how and stick around after launch.</p></div></details>
@@ -265,7 +259,7 @@
 </section>
 
 <!-- ============ CONTACT ============ -->
-<section id="contact" class="contact scene" data-rail="Say hello" aria-labelledby="contact-h">
+<section id="contact" class="contact scene" aria-labelledby="contact-h">
   <h2 class="hello" id="contact-h" aria-label="Say hello">
     <span class="hl" data-scatter>Say</span>
     <span class="hl" data-scatter>hel—</span>

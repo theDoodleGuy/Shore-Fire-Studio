@@ -115,16 +115,53 @@
     const hr = hero.getBoundingClientRect();
     const w2 = $('.w2', layerA).getBoundingClientRect(), w3 = $('.w3', layerA).getBoundingClientRect();
     if (!hr.height || !w2.height) return;
-    const wide = innerWidth >= 1000 && innerWidth / innerHeight >= 1.25;
+    const wide = innerWidth >= 700 && innerWidth / innerHeight >= 1.25;
     const slope = innerWidth < 700 ? 8 : wide ? 20 : 12;
     const x = (w2.left + Math.min(w2.right, innerWidth)) / 2;               // middle of SITES on screen
     const y = ((w2.top + w2.bottom) / 2 + (w3.top + w3.bottom) / 2) / 2 - hr.top; // between SITES and that
     baseL = y / hr.height * 100 + slope * x / innerWidth;
     baseR = baseL - slope;
   };
-  aimWater();
-  if (document.fonts) document.fonts.ready.then(aimWater);
-  let aimT; addEventListener('resize', () => { clearTimeout(aimT); aimT = setTimeout(aimWater, 300); });
+  // v0.13: safety net for every window shape. If the headline would touch the copy, the
+  // buttons or the header, shrink it until it doesn't; if it's already at its smallest,
+  // let the hero grow taller instead of overlapping.
+  const fitHero = () => {
+    const ctasEl = $('.ctas');
+    hero.style.removeProperty('--f'); hero.style.removeProperty('height');
+    ctasEl.style.removeProperty('top'); ctasEl.style.removeProperty('bottom');
+    const hw = $('.hw', layerA), pad = 18;
+    const R = el => el.getBoundingClientRect();
+    const words = () => ['.w1', '.w2', '.w3', '.w4'].map(c => { const r = R($(c, layerA)); return { left: r.left, right: Math.min(r.right, innerWidth), top: r.top, bottom: r.bottom }; });
+    const hits = (a, b) => !(a.right + pad <= b.left || b.right + pad <= a.left || a.bottom + pad <= b.top || b.bottom + pad <= a.top);
+    const overlapY = (a, b) => Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) + pad;
+    // 1. buttons go under the copy if they'd collide with it
+    const placeCtas = () => {
+      const hp = R($('.hero-sub .hp')), ct = R(ctasEl);
+      if (hits(hp, ct)) { ctasEl.style.top = (hp.bottom - R(hero).top + 22) + 'px'; ctasEl.style.bottom = 'auto'; }
+    };
+    // 2. how badly the headline touches the header, copy or buttons
+    const clash = () => {
+      const w = words(), c = [R($('.hero-sub .hs')), R($('.hero-sub .hp')), R(ctasEl)], hdr = R($('.top')).bottom;
+      let worst = 0;
+      w.forEach(a => c.forEach(b => { if (hits(a, b)) worst = Math.max(worst, overlapY(a, b)); }));
+      if (w[0].top < hdr + 8) worst = Math.max(worst, hdr + 8 - w[0].top);
+      return worst;
+    };
+    placeCtas();
+    let fs = parseFloat(getComputedStyle(hw).fontSize), n = 0;
+    while (clash() > 0 && fs > 44 && n++ < 40) {
+      fs *= 0.94; hero.style.setProperty('--f', fs.toFixed(1) + 'px');
+      ctasEl.style.removeProperty('top'); ctasEl.style.removeProperty('bottom'); placeCtas();
+    }
+    // 3. last resort: let the hero grow so nothing overlaps or falls off its bottom
+    const hr = R(hero), lowest = Math.max(R(ctasEl).bottom, ...words().map(r => r.bottom));
+    const extra = Math.max(clash(), lowest + 28 - hr.bottom);
+    if (extra > 0) hero.style.height = (hero.offsetHeight + extra) + 'px';
+  };
+  const refit = () => { fitHero(); aimWater(); };
+  refit();
+  if (document.fonts) document.fonts.ready.then(refit);
+  let aimT; addEventListener('resize', () => { clearTimeout(aimT); aimT = setTimeout(refit, 200); });
   function frame(t) {
     const s = t / 1000, sy = scrollY;
     // waterline breathes and leans toward the pointer
@@ -142,7 +179,7 @@
       r2.style.transform = `translateX(${-30 + p * 30}%)`;
     }
     const max = document.documentElement.scrollHeight - innerHeight;
-    depth.textContent = String(Math.round(sy / max * 100)).padStart(3, '0');
+    if (depth) depth.textContent = String(Math.round(sy / max * 100)).padStart(3, '0');
     if (!calm) requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
@@ -474,20 +511,6 @@
       const el = $(a.getAttribute('href')); if (!el) return;
       e.preventDefault(); setTimeout(() => glide(Math.min(maxY(), Math.round(el.getBoundingClientRect().top + scrollY))), 30);
     }));
-  }
-
-  // ---- 14. Rail: shows the current scene's number and name ----
-  {
-    const railNum = $('#railNum'), railName = $('#railName');
-    const items = $$('[data-rail]').filter(el => getComputedStyle(el).scrollSnapAlign !== 'none');
-    let cur = -1;
-    const upd = () => {
-      const mid = scrollY + innerHeight * 0.4;
-      let i = 0; items.forEach((el, k) => { if (el.getBoundingClientRect().top + scrollY <= mid) i = k; });
-      if (i === cur) return; cur = i;
-      railNum.textContent = String(i + 1).padStart(2, '0'); railName.textContent = items[i].dataset.rail;
-    };
-    addEventListener('scroll', upd, { passive: true }); upd();
   }
 
   $('#yr').textContent = new Date().getFullYear();

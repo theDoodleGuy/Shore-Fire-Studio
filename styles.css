@@ -606,7 +606,7 @@ html.touch-paging body{overscroll-behavior-y:none}
 }
 
 /* desktop, landscape: headline left, copy column right */
-@media(min-width:1000px) and (min-aspect-ratio:5/4){
+@media(min-width:700px) and (min-aspect-ratio:5/4){
   .hero{
     --cx:max(var(--pad),calc((100vw - 1640px) / 2));
     --col:clamp(260px,25vw,400px);
@@ -791,4 +791,16 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 @media(min-width:1000px){
   .hello{font-size:clamp(60px,min(9.5vw,20vh),190px);justify-self:start}
   .hl:nth-child(2){margin-left:.3em}.hl:nth-child(3){margin-left:.75em}
+}
+
+/* v0.13 hero: lay out for the real screen height (no 640px floor), with sensible type floors.
+   main.js fitHero() then guarantees nothing touches, growing the hero only as a last resort. */
+.hero{--hh:max(420px,var(--screen,100svh));min-height:0}
+.hero{--f:max(44px,min(27vw,calc((var(--hh) - 430px)/2.4)))}
+@media(min-width:700px){
+  .hero{--f:max(52px,min(calc((100vw - 2*var(--cx)) / 4.5),calc((var(--hh) - 400px) / 2.6),230px))}
+}
+@media(min-width:700px) and (min-aspect-ratio:5/4){
+  .hero{--f:max(52px,min(calc((100vw - 2*var(--cx) - var(--col) - var(--gap)) / 4.5),
+            calc((var(--hh) - 150px) / 2.62),calc((var(--hh) - 150px - var(--S)) / 1.82),270px))}
 }
