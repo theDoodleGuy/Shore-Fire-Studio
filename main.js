@@ -155,7 +155,14 @@
     const extra = Math.max(clash(), lowest + 28 - hr.bottom);
     if (extra > 0) hero.style.height = (hero.offsetHeight + Math.min(extra, innerHeight * 0.35)) + 'px';
   };
-  const refit = () => { fitHero(); aimWater(); };
+  // Only measure with the hero at the top: when scrolled away its words slide sideways,
+  // which reads as a false collision. Re-fits that arrive mid-page wait until you're back.
+  let refitDue = false;
+  const refit = () => {
+    if (scrollY > 4) { refitDue = true; return; }
+    refitDue = false; fitHero(); aimWater();
+  };
+  addEventListener('scroll', () => { if (refitDue && scrollY <= 4) requestAnimationFrame(refit); }, { passive: true });
   refit();
   if (document.fonts) document.fonts.ready.then(refit);
   // re-fit only after the locked screen height has been updated (it fires 'screenchange'),
