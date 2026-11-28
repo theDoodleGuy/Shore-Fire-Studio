@@ -288,7 +288,7 @@
   // A full-width wipe covers the whole Work scene, the content swaps underneath, then it uncovers.
   // Forward (and looping last → first) sweeps left to right; back (and looping first → last) right to left.
   const wipeEl = document.createElement('div');
-  wipeEl.className = 'w-wipe'; wipeEl.setAttribute('aria-hidden', 'true'); wipeEl.innerHTML = '<i></i><i></i>';
+  wipeEl.className = 'w-wipe'; wipeEl.setAttribute('aria-hidden', 'true'); wipeEl.innerHTML = '<i></i><i></i><i></i>';
   $('#work').appendChild(wipeEl);
   let busy = false;
   const swap = (n, dir) => {
@@ -321,7 +321,7 @@
     void wipeEl.offsetWidth; wipeEl.classList.add('run');
     slidesEls[n].querySelectorAll('img').forEach(i => i.decode && i.decode().catch(() => {}));
     setTimeout(() => swap(n, dir), 430);                       // fully covered: swap underneath
-    setTimeout(() => { wipeEl.classList.remove('run'); busy = false; }, 1000);
+    setTimeout(() => { wipeEl.classList.remove('run'); busy = false; }, 1120);
   };
   const stopAuto = () => { touched = true; clearInterval(auto); };
   $('.w-next', reel).addEventListener('click', () => { stopAuto(); go(wi + 1, 1); });

@@ -1031,3 +1031,12 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 @keyframes wipeL{0%{clip-path:polygon(100% 0,100% 0,100% 100%,88% 100%)}45%{clip-path:polygon(12% 0,100% 0,100% 100%,0 100%)}55%{clip-path:polygon(12% 0,100% 0,100% 100%,0 100%)}100%{clip-path:polygon(12% 0,12% 0,0 100%,0 100%)}}
 /* v0.21 swap under the wipe with no transitions, so content is already in place when it uncovers */
 .reel.snap *,.reel.snap *::before,.reel.snap *::after{transition:none!important;animation:none!important}
+/* v0.22 orange on both edges of the wipe (orange, midnight, orange) so it always contrasts,
+   including against the midnight "Your site here" frame, where midnight-on-midnight hid the edge */
+.w-wipe i:nth-child(1){background:var(--orange)}
+.w-wipe i:nth-child(2){background:var(--mid)}
+.w-wipe i:nth-child(3){background:var(--orange)}
+.w-wipe.run.to-right i:nth-child(2){animation:wipeR .9s cubic-bezier(.7,0,.2,1) .08s both}
+.w-wipe.run.to-right i:nth-child(3){animation:wipeR .9s cubic-bezier(.7,0,.2,1) .16s both}
+.w-wipe.run.to-left i:nth-child(2){animation:wipeL .9s cubic-bezier(.7,0,.2,1) .08s both}
+.w-wipe.run.to-left i:nth-child(3){animation:wipeL .9s cubic-bezier(.7,0,.2,1) .16s both}
