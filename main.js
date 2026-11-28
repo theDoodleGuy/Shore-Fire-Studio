@@ -295,7 +295,11 @@
     out.classList.remove('is-on'); inn.classList.add('is-on');
     dots[wi].classList.remove('on'); dots[n].classList.add('on');
     wi = n; wNow.textContent = String(n + 1).padStart(2, '0');
-    reveal(inName, 250);
+    if (calm) { reveal(inName, 0); return; }
+    // Everything lands in place instantly while covered, so the uncover shows the finished slide
+    reel.classList.add('snap'); inName.classList.add('in'); void reel.offsetWidth;
+    requestAnimationFrame(() => requestAnimationFrame(() => reel.classList.remove('snap')));
+    setTimeout(() => glitch(inName), 520);
   };
   const go = (n, dir) => {
     n = (n + slidesEls.length) % slidesEls.length;
@@ -308,6 +312,7 @@
     wipeEl.style.top = (sr.top - wr.top - 12) + 'px'; wipeEl.style.height = (sr.height + 24) + 'px';
     wipeEl.className = 'w-wipe ' + (dir > 0 ? 'to-right' : 'to-left');
     void wipeEl.offsetWidth; wipeEl.classList.add('run');
+    slidesEls[n].querySelectorAll('img').forEach(i => i.decode && i.decode().catch(() => {}));
     setTimeout(() => swap(n, dir), 430);                       // fully covered: swap underneath
     setTimeout(() => { wipeEl.classList.remove('run'); busy = false; }, 1000);
   };

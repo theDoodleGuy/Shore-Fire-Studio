@@ -1029,3 +1029,5 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 .w-wipe.run.to-left i:last-child{animation:wipeL .9s cubic-bezier(.7,0,.2,1) .08s both}
 @keyframes wipeR{0%{clip-path:polygon(0 0,12% 0,0 100%,0 100%)}45%{clip-path:polygon(0 0,100% 0,88% 100%,0 100%)}55%{clip-path:polygon(0 0,100% 0,88% 100%,0 100%)}100%{clip-path:polygon(100% 0,100% 0,88% 100%,88% 100%)}}
 @keyframes wipeL{0%{clip-path:polygon(100% 0,100% 0,100% 100%,88% 100%)}45%{clip-path:polygon(12% 0,100% 0,100% 100%,0 100%)}55%{clip-path:polygon(12% 0,100% 0,100% 100%,0 100%)}100%{clip-path:polygon(12% 0,12% 0,0 100%,0 100%)}}
+/* v0.21 swap under the wipe with no transitions, so content is already in place when it uncovers */
+.reel.snap *,.reel.snap *::before,.reel.snap *::after{transition:none!important;animation:none!important}
