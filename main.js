@@ -255,15 +255,23 @@
 
   // ---- FAQ: one open at a time, animated open and shut ----
   const faqs = $$('.qs details');
+  // live S mark per question, so its halves can slide and recolour smoothly
+  faqs.forEach(d => {
+    const m = document.createElement('span'); m.className = 'qm'; m.setAttribute('aria-hidden', 'true');
+    m.innerHTML = '<svg viewBox="-170 -170 340 340"><g transform="rotate(-35)"><path class="qt" d="M-100 0A100 100 0 0 1 100 0Z"/><path class="qb" d="M100 0A100 100 0 0 1-100 0Z"/></g></svg>';
+    $('summary', d).appendChild(m);
+    d.classList.toggle('on', d.open);
+  });
   const shut = d => {
     const a = $('.ans', d);
+    d.classList.remove('on');
     if (calm) { d.open = false; return; }
     d.classList.add('closing');
     a.animate([{ height: a.offsetHeight + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)' })
       .onfinish = () => { d.open = false; d.classList.remove('closing'); };
   };
   const show = d => {
-    d.open = true;
+    d.open = true; d.classList.add('on');
     if (calm) return;
     const a = $('.ans', d);
     a.animate([{ height: '0px', opacity: 0 }, { height: a.scrollHeight + 'px', opacity: 1 }], { duration: 480, easing: 'cubic-bezier(.2,.8,.2,1)' });

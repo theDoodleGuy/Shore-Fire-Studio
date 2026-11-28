@@ -1040,3 +1040,14 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 .w-wipe.run.to-right i:nth-child(3){animation:wipeR .9s cubic-bezier(.7,0,.2,1) .16s both}
 .w-wipe.run.to-left i:nth-child(2){animation:wipeL .9s cubic-bezier(.7,0,.2,1) .08s both}
 .w-wipe.run.to-left i:nth-child(3){animation:wipeL .9s cubic-bezier(.7,0,.2,1) .16s both}
+/* v0.23 FAQ mark: live S whose halves slide apart and recolour, both opening and closing */
+.qs summary::after{content:none!important;display:none}
+.qm{flex:0 0 28px;width:28px;height:28px;display:block;transition:transform .45s cubic-bezier(.6,-0.4,.3,1.5)}
+.qm svg{display:block;width:100%;height:100%;overflow:visible}
+.qm path{fill:var(--mid);transition:transform .45s cubic-bezier(.6,-0.4,.3,1.5),fill .35s ease}
+.qm .qt{transform:translate(0px,-6px)}
+.qm .qb{transform:translate(0px,6px)}
+.qs details.on .qm{transform:scale(1.12)}
+.qs details.on .qm .qt{transform:translate(20px,-4px);fill:var(--orange)}
+.qs details.on .qm .qb{transform:translate(-20px,4px);fill:var(--aink)}
+@media(prefers-reduced-motion:reduce){.qm,.qm path{transition:none}}
