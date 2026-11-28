@@ -199,7 +199,7 @@
       cur.style.transform = `translate(${cx - 14}px,${cy - 14}px)`;
       requestAnimationFrame(follow);
     })();
-    document.addEventListener('pointerover', e => cur.classList.toggle('hov', !!e.target.closest('a,button,summary,.ticket,[data-cut],.brick,input,select,textarea')));
+    document.addEventListener('pointerover', e => cur.classList.toggle('hov', !!e.target.closest('a,button,summary,label,input,select,textarea,[role=button]')));
   }
 
   // ---- 10. Menu ----
