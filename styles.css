@@ -1014,3 +1014,18 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 .shot>picture{display:none}
 @media(min-width:1000px){.shot{aspect-ratio:16/11;max-height:calc(var(--screen,100svh) * .6)}}
 @media(max-width:999px){.shot{aspect-ratio:16/12;max-height:none}.dev-desk{width:88%}.dev-phone{width:27%}}
+
+/* v0.20 work wipe: edge to edge across the whole scene, direction follows navigation */
+#work{position:relative}
+#work .shot .wipe{display:none}
+.w-wipe{position:absolute;inset:0;z-index:5;pointer-events:none;visibility:hidden;overflow:hidden}
+.w-wipe i{position:absolute;top:0;bottom:0;left:-20%;right:-20%}
+.w-wipe i:first-child{background:var(--orange)}
+.w-wipe i:last-child{background:var(--mid)}
+.w-wipe.run{visibility:visible}
+.w-wipe.run.to-right i:first-child{animation:wipeR .9s cubic-bezier(.7,0,.2,1) both}
+.w-wipe.run.to-right i:last-child{animation:wipeR .9s cubic-bezier(.7,0,.2,1) .08s both}
+.w-wipe.run.to-left i:first-child{animation:wipeL .9s cubic-bezier(.7,0,.2,1) both}
+.w-wipe.run.to-left i:last-child{animation:wipeL .9s cubic-bezier(.7,0,.2,1) .08s both}
+@keyframes wipeR{0%{clip-path:polygon(0 0,12% 0,0 100%,0 100%)}45%{clip-path:polygon(0 0,100% 0,88% 100%,0 100%)}55%{clip-path:polygon(0 0,100% 0,88% 100%,0 100%)}100%{clip-path:polygon(100% 0,100% 0,88% 100%,88% 100%)}}
+@keyframes wipeL{0%{clip-path:polygon(100% 0,100% 0,100% 100%,88% 100%)}45%{clip-path:polygon(12% 0,100% 0,100% 100%,0 100%)}55%{clip-path:polygon(12% 0,100% 0,100% 100%,0 100%)}100%{clip-path:polygon(12% 0,12% 0,0 100%,0 100%)}}

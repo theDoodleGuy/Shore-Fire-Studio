@@ -278,24 +278,35 @@
     sh.insertAdjacentHTML('beforeend', '<div class="wipe"><i></i><i></i></div>');
   });
   let wi = 0, auto = null, touched = false;
-  const go = (n, dir) => {
-    n = (n + slidesEls.length) % slidesEls.length;
-    if (n === wi) return;
-    dir = dir || (n > wi ? 1 : -1);
+  // A full-width wipe covers the whole Work scene, the content swaps underneath, then it uncovers.
+  // Forward (and looping last → first) sweeps left to right; back (and looping first → last) right to left.
+  const wipeEl = document.createElement('div');
+  wipeEl.className = 'w-wipe'; wipeEl.setAttribute('aria-hidden', 'true'); wipeEl.innerHTML = '<i></i><i></i>';
+  $('#work').appendChild(wipeEl);
+  let busy = false;
+  const swap = (n, dir) => {
     reel.style.setProperty('--off', dir > 0 ? '45%' : '-45%');
     const out = slidesEls[wi], inn = slidesEls[n];
     const outName = $('.w-name [data-cut]', out), inName = $('.w-name [data-cut]', inn);
     outName.classList.remove('in');
-    // start the incoming slide from the opposite side, then let it slide home
     reel.style.setProperty('--off', dir > 0 ? '-45%' : '45%');
     inn.classList.remove('is-on'); void inn.offsetWidth;
     reel.style.setProperty('--off', dir > 0 ? '45%' : '-45%');
     out.classList.remove('is-on'); inn.classList.add('is-on');
     dots[wi].classList.remove('on'); dots[n].classList.add('on');
     wi = n; wNow.textContent = String(n + 1).padStart(2, '0');
-    reveal(inName, 150);
-    if (!calm) { inn.classList.remove('wiping'); void inn.offsetWidth; inn.classList.add('wiping'); setTimeout(() => inn.classList.remove('wiping'), 1000); }
-    if (!calm) setTimeout(() => { reel.classList.remove('tear'); void reel.offsetWidth; reel.classList.add('tear'); setTimeout(() => reel.classList.remove('tear'), 460); }, 700);
+    reveal(inName, 250);
+  };
+  const go = (n, dir) => {
+    n = (n + slidesEls.length) % slidesEls.length;
+    if (n === wi || busy) return;
+    dir = dir || (n > wi ? 1 : -1);
+    if (calm) { swap(n, dir); return; }
+    busy = true;
+    wipeEl.className = 'w-wipe ' + (dir > 0 ? 'to-right' : 'to-left');
+    void wipeEl.offsetWidth; wipeEl.classList.add('run');
+    setTimeout(() => swap(n, dir), 430);                       // fully covered: swap underneath
+    setTimeout(() => { wipeEl.classList.remove('run'); busy = false; }, 1000);
   };
   const stopAuto = () => { touched = true; clearInterval(auto); };
   $('.w-next', reel).addEventListener('click', () => { stopAuto(); go(wi + 1, 1); });
