@@ -1018,7 +1018,7 @@ html.js-paging{scroll-snap-type:none;scroll-behavior:auto}
 /* v0.20 work wipe: edge to edge across the whole scene, direction follows navigation */
 #work{position:relative}
 #work .shot .wipe{display:none}
-.w-wipe{position:absolute;inset:0;z-index:5;pointer-events:none;visibility:hidden;overflow:hidden}
+.w-wipe{position:absolute;left:0;right:0;top:0;height:100%;z-index:5;pointer-events:none;visibility:hidden;overflow:hidden}
 .w-wipe i{position:absolute;top:0;bottom:0;left:-20%;right:-20%}
 .w-wipe i:first-child{background:var(--orange)}
 .w-wipe i:last-child{background:var(--mid)}

@@ -303,6 +303,9 @@
     dir = dir || (n > wi ? 1 : -1);
     if (calm) { swap(n, dir); return; }
     busy = true;
+    // Full width, but only as tall as the band holding the text and screenshots
+    const wr = $('#work').getBoundingClientRect(), sr = $('.slides', reel).getBoundingClientRect();
+    wipeEl.style.top = (sr.top - wr.top - 12) + 'px'; wipeEl.style.height = (sr.height + 24) + 'px';
     wipeEl.className = 'w-wipe ' + (dir > 0 ? 'to-right' : 'to-left');
     void wipeEl.offsetWidth; wipeEl.classList.add('run');
     setTimeout(() => swap(n, dir), 430);                       // fully covered: swap underneath
